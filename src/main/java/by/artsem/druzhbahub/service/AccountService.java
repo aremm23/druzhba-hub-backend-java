@@ -1,4 +1,6 @@
 package by.artsem.druzhbahub.service;
 
-public interface AccountService {
+import by.artsem.druzhbahub.model.Account;
+
+public interface AccountService extends CRUDService<Account, Long> {
 }
