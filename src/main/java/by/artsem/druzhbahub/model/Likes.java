@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @Entity
-@Table(name = "like")
+@Table(name = "likes")
 @NoArgsConstructor
-public class Like {
+public class Likes {
     @Id
     @SequenceGenerator(name = "likeIdSeqGen", sequenceName = "like_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "likeIdSeqGen")

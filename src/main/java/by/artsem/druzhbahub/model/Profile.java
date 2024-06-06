@@ -1,5 +1,6 @@
 package by.artsem.druzhbahub.model;
 
+import by.artsem.druzhbahub.security.model.Account;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -45,7 +46,7 @@ public class Profile {
     private List<Post> posts;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-    private List<Like> likes;
+    private List<Likes> likes;
 
     @ManyToMany
     @JoinTable(
