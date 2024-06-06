@@ -146,6 +146,25 @@ create table public.post
 alter table public.post
     owner to postgres;
 
+create table public.confirm_token
+(
+    id         bigserial
+        constraint confirm_token_pk
+            primary key,
+    token      varchar   not null,
+    account_id bigint    not null
+        constraint confirm_token_account_id_fk
+            references public.account
+            on update cascade on delete cascade,
+    created_at timestamp not null,
+    expire_at  timestamp not null
+);
+
+alter table public.confirm_token
+    owner to postgres;
+
+
+
 create table public.likes
 (
     id         bigserial
