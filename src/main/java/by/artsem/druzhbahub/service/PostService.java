@@ -1,4 +1,6 @@
 package by.artsem.druzhbahub.service;
 
-public interface PostService {
+import by.artsem.druzhbahub.model.Post;
+
+public interface PostService extends CRUDService<Post, Long> {
 }

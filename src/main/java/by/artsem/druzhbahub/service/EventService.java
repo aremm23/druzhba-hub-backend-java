@@ -1,4 +1,6 @@
 package by.artsem.druzhbahub.service;
 
-public interface EventService {
+import by.artsem.druzhbahub.model.Event;
+
+public interface EventService extends CRUDService<Event, Long> {
 }
