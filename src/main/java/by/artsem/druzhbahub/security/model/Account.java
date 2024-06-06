@@ -1,5 +1,6 @@
-package by.artsem.druzhbahub.model;
+package by.artsem.druzhbahub.security.model;
 
+import by.artsem.druzhbahub.model.Profile;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -26,13 +27,17 @@ public class Account {
     private String password;
 
     @Column(nullable = false)
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @Column(name = "is_email_confirmed")
+    private boolean isEmailConfirmed;
 
     @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
     private Profile profile;
