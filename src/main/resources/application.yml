@@ -32,3 +32,6 @@ spring:
           starttls:
             enable: true
             required: true
+email:
+  confirm:
+    link: http://${HOST_LOCAL}:8080/api/register/confirm?token=

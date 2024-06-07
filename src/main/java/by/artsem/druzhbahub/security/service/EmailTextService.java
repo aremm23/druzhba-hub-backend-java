@@ -1,22 +1,29 @@
 package by.artsem.druzhbahub.security.service;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 @Getter
 public class EmailTextService {
-    private final String BODY_TEXT = "Please click the link to confirm your email: ";
-    private final String SUBJECT_TEXT = "Confirm your email";
-    private final String LINK = "http://localhost:8080/api/register/confirm?token=";
+
+    private static final String BODY_TEXT = "Please click the link to confirm your email: ";
+
+    private static final String SUBJECT_TEXT = "Confirm your email";
+
+    @Value("${email.confirm.link}")
+    private String link;
 
     private String subject;
+
     private String body;
 
     public void createEmailMessage(String token) {
-        body = BODY_TEXT + LINK + token;
+        if (link == null || link.isEmpty()) {
+            throw new IllegalStateException("Confirmation link is not configured");
+        }
+        body = BODY_TEXT + link + token;
         subject = SUBJECT_TEXT;
     }
 }
