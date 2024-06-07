@@ -1,6 +1,7 @@
 package by.artsem.druzhbahub.security.service;
 
 import by.artsem.druzhbahub.security.model.Account;
+import by.artsem.druzhbahub.security.model.ConfirmationToken;
 import by.artsem.druzhbahub.security.model.dto.RegistrationRequestDTO;
 import by.artsem.druzhbahub.security.model.dto.mapper.AccountMapper;
 import by.artsem.druzhbahub.security.repository.AccountRepository;
@@ -15,13 +16,15 @@ import java.time.LocalDateTime;
 @Service
 public class AccountService {
 
-    private AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
 
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-    private ProfileService profileService;
+    private final ProfileService profileService;
 
-    private AccountMapper accountMapper;
+    private final ConfirmationTokenService confirmationTokenService;
+
+    private final AccountMapper accountMapper;
 
     public Account createAccountAndProfile(RegistrationRequestDTO dto) {
         Account account = toEntityAllFields(dto, dto.getPassword());
@@ -38,4 +41,13 @@ public class AccountService {
         return account;
     }
 
+    public void confirmEmail(String token) {
+        ConfirmationToken confirmationToken = confirmationTokenService.findByToken(token);
+        if (confirmationTokenService.isExpire(confirmationToken)) {
+            throw new RuntimeException();//TODO custom exception
+        }
+        Account account = confirmationToken.getAccount();
+        account.setEmailConfirmed(true);
+        accountRepository.save(account);
+    }
 }
