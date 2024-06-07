@@ -1,5 +1,6 @@
 package by.artsem.druzhbahub.security.service;
 
+import by.artsem.druzhbahub.exception.TokenExpireException;
 import by.artsem.druzhbahub.security.model.Account;
 import by.artsem.druzhbahub.security.model.ConfirmationToken;
 import by.artsem.druzhbahub.security.model.dto.RegistrationRequestDTO;
@@ -44,7 +45,7 @@ public class AccountService {
     public void confirmEmail(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.findByToken(token);
         if (confirmationTokenService.isExpire(confirmationToken)) {
-            throw new RuntimeException();//TODO custom exception
+            throw new TokenExpireException("Expired token");
         }
         Account account = confirmationToken.getAccount();
         account.setEmailConfirmed(true);

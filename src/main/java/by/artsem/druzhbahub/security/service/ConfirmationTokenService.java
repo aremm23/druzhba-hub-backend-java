@@ -1,5 +1,7 @@
 package by.artsem.druzhbahub.security.service;
 
+import by.artsem.druzhbahub.exception.DataNotFoundedException;
+import by.artsem.druzhbahub.exception.TokenExpireException;
 import by.artsem.druzhbahub.security.model.Account;
 import by.artsem.druzhbahub.security.model.ConfirmationToken;
 import by.artsem.druzhbahub.security.repository.ConfirmationTokenRepository;
@@ -15,18 +17,21 @@ public class ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
 
     public ConfirmationToken createToken(Account account) {
-        ConfirmationToken confirmationToken = new ConfirmationToken();
-        confirmationToken.setToken(UUID.randomUUID().toString());
-        confirmationToken.setCreatedAt(LocalDateTime.now());
-        confirmationToken.setExpireAt(LocalDateTime.now().plusHours(1));
-        confirmationToken.setAccount(account);
-        confirmationTokenRepository.save(confirmationToken);
-        return confirmationToken;
+        return confirmationTokenRepository.save(buildConfirmationToken(account));
+    }
+
+    private ConfirmationToken buildConfirmationToken(Account account) {
+        return ConfirmationToken.builder()
+                .token(UUID.randomUUID().toString())
+                .account(account)
+                .expireAt(LocalDateTime.now().plusHours(1))
+                .createdAt(LocalDateTime.now())
+                .build();
     }
 
     public ConfirmationToken findByToken(String token) {
         return confirmationTokenRepository.findByToken(token).orElseThrow(
-                () -> new RuntimeException() //TODO
+                () -> new DataNotFoundedException("Token not found")
         );
     }
 

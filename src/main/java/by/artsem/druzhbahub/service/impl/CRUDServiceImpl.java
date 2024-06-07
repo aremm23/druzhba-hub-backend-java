@@ -1,5 +1,6 @@
 package by.artsem.druzhbahub.service.impl;
 
+import by.artsem.druzhbahub.exception.DataNotFoundedException;
 import by.artsem.druzhbahub.service.CRUDService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -32,7 +33,7 @@ public abstract class CRUDServiceImpl<T, ID> implements CRUDService<T, ID> {
         if (repository.existsById(id)) {
             return repository.save(entity);
         } else {
-            throw new RuntimeException();//TODO make exception
+            throw new DataNotFoundedException(entity.getClass() + " with " + id + " not found");
         }
     }
 
