@@ -39,7 +39,8 @@ public class Account {
     @Column(name = "is_email_confirmed")
     private boolean isEmailConfirmed;
 
-    @OneToOne(mappedBy = "account", cascade = CascadeType.ALL)
+    @OneToOne
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
 
 

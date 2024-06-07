@@ -21,8 +21,7 @@ public class Profile {
     @GeneratedValue(generator = "profileIdSeqGen")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
     private Account account;
 
     @Column(nullable = false, unique = true)
@@ -32,12 +31,6 @@ public class Profile {
 
     @Column(length = 350)
     private String selfSummary;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private List<ProfileImage> profileImages;
