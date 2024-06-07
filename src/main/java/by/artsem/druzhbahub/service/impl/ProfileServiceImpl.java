@@ -6,7 +6,6 @@ import by.artsem.druzhbahub.security.model.Account;
 import by.artsem.druzhbahub.service.ProfileService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.Collections;
 
 
@@ -28,6 +27,8 @@ public class ProfileServiceImpl extends CRUDServiceImpl<Profile, Long> implement
                         .posts(Collections.emptyList())
                         .selfSummary("")
                         .username(username)
+                        .reviewsFrom(Collections.emptyList())
+                        .reviewsTo(Collections.emptyList())
                         .build()
         );
     }

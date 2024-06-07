@@ -41,6 +41,12 @@ public class Profile {
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private List<Likes> likes;
 
+    @OneToMany(mappedBy = "profileFrom", cascade = CascadeType.ALL)
+    private List<Review> reviewsFrom;
+
+    @OneToMany(mappedBy = "profileTo", cascade = CascadeType.ALL)
+    private List<Review> reviewsTo;
+
     @ManyToMany
     @JoinTable(
             name = "friends",
