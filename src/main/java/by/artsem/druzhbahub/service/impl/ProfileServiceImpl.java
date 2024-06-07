@@ -28,8 +28,6 @@ public class ProfileServiceImpl extends CRUDServiceImpl<Profile, Long> implement
                         .posts(Collections.emptyList())
                         .selfSummary("")
                         .username(username)
-                        .updatedAt(LocalDateTime.now())
-                        .createdAt(LocalDateTime.now())
                         .build()
         );
     }

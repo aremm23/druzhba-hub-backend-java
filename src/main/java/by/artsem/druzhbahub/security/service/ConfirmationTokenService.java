@@ -18,7 +18,7 @@ public class ConfirmationTokenService {
         ConfirmationToken confirmationToken = new ConfirmationToken();
         confirmationToken.setToken(UUID.randomUUID().toString());
         confirmationToken.setCreatedAt(LocalDateTime.now());
-        confirmationToken.setExpiresAt(LocalDateTime.now().plusHours(1));
+        confirmationToken.setExpireAt(LocalDateTime.now().plusHours(1));
         confirmationToken.setAccount(account);
         confirmationTokenRepository.save(confirmationToken);
         return confirmationToken;
@@ -28,5 +28,9 @@ public class ConfirmationTokenService {
         return confirmationTokenRepository.findByToken(token).orElseThrow(
                 () -> new RuntimeException() //TODO
         );
+    }
+
+    public boolean isExpire(ConfirmationToken confirmationToken) {
+        return confirmationToken.getExpireAt().isBefore(LocalDateTime.now());
     }
 }
