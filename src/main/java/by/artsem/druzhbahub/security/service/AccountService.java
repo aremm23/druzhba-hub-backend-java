@@ -7,10 +7,7 @@ import by.artsem.druzhbahub.exception.TokenExpireException;
 import by.artsem.druzhbahub.security.model.Account;
 import by.artsem.druzhbahub.security.model.ConfirmationToken;
 import by.artsem.druzhbahub.security.model.Role;
-import by.artsem.druzhbahub.security.model.dto.EmailUpdateRequestDTO;
-import by.artsem.druzhbahub.security.model.dto.PasswordUpdateRequestDTO;
-import by.artsem.druzhbahub.security.model.dto.RegistrationRequestDTO;
-import by.artsem.druzhbahub.security.model.dto.RoleUpdateRequestDTO;
+import by.artsem.druzhbahub.security.model.dto.*;
 import by.artsem.druzhbahub.security.model.dto.mapper.AccountMapper;
 import by.artsem.druzhbahub.security.repository.AccountRepository;
 import by.artsem.druzhbahub.service.ProfileService;
@@ -37,6 +34,9 @@ public class AccountService {
     private final AccountMapper accountMapper;
 
     public Account createAccountAndProfile(RegistrationRequestDTO dto) {
+        if (accountRepository.existsByEmail(dto.getEmail())) {
+            throw new DataFormatException("Email is already exist");
+        }
         Account account = mapDtoToEntityWithAllFields(dto);
         return accountRepository.save(account);
     }
@@ -86,6 +86,7 @@ public class AccountService {
             throw new DataFormatException("Email is already exist");
         }
         account.setEmail(emailUpdateRequestDTO.getEmail());
+        account.setEmailConfirmed(false);
         accountRepository.save(account);
     }
 
@@ -100,14 +101,31 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    public List<Account> findAll() {//TODO make ResponseDTO
-        return accountRepository.findAll();
+    public List<AccountResponseDTO> findAll() {
+        List<Account> accounts = accountRepository.findAll();
+        return accounts.stream().map(
+                account ->
+                        AccountResponseDTO.builder()
+                                .email(account.getEmail())
+                                .role(account.getRole().name())
+                                .createdAt(account.getCreatedAt().toString())
+                                .updatedAt(account.getUpdatedAt().toString())
+                                .id(account.getId())
+                                .build()
+        ).toList();
     }
 
-    public Account findById(Long id) {//TODO make ResponseDTO
-        return accountRepository.findById(id).orElseThrow(
+    public AccountResponseDTO findById(Long id) {
+        Account account = accountRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundedException("User not founded")
         );
+        return AccountResponseDTO.builder()
+                .email(account.getEmail())
+                .role(account.getRole().name())
+                .createdAt(account.getCreatedAt().toString())
+                .updatedAt(account.getUpdatedAt().toString())
+                .id(account.getId())
+                .build();
     }
 
     public void delete(Long id) {
