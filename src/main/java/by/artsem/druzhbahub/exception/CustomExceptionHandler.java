@@ -17,7 +17,8 @@ public class CustomExceptionHandler {
             DataNotCreatedException.class,
             NullPointerException.class,
             IllegalStateException.class,
-            DataFormatException.class
+            DataFormatException.class,
+            IllegalArgumentException.class
     })
     private ResponseEntity<ErrorResponse> handlerException(RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(
