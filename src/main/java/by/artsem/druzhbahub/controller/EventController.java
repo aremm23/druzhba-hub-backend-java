@@ -27,7 +27,7 @@ public class EventController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")//TODO make DTO
+    @PutMapping("/{id}")
     public ResponseEntity<EventResponseDto> updateEvent(
             @PathVariable Long id,
             @RequestBody @Valid Event event

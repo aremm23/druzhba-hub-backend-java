@@ -90,6 +90,11 @@ public class EventServiceImpl implements EventService {
         Event existingEvent = eventRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundedException("Event with id %d not found".formatted(id))
         );
+        parseUpdatedToExisted(updatedEvent, existingEvent);
+        return eventRepository.save(existingEvent);
+    }
+
+    private void parseUpdatedToExisted(Event updatedEvent, Event existingEvent) {
         existingEvent.setSummary(updatedEvent.getSummary());
         existingEvent.setCategory(updatedEvent.getCategory());
         existingEvent.setLocation(updatedEvent.getLocation());
@@ -97,7 +102,6 @@ public class EventServiceImpl implements EventService {
         existingEvent.setUpdatedAt(LocalDateTime.now());
         existingEvent.setEventImages(updatedEvent.getEventImages());
         existingEvent.setPosts(updatedEvent.getPosts());
-        return eventRepository.save(existingEvent);
     }
 
     @Override
