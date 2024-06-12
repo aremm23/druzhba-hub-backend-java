@@ -1,10 +1,10 @@
 package by.artsem.druzhbahub.service.impl;
 
+import by.artsem.druzhbahub.exception.DataFormatException;
 import by.artsem.druzhbahub.exception.DataNotFoundedException;
 import by.artsem.druzhbahub.model.Profile;
 import by.artsem.druzhbahub.repository.ProfileRepository;
 import by.artsem.druzhbahub.security.model.Account;
-import by.artsem.druzhbahub.security.service.AccountService;
 import by.artsem.druzhbahub.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,6 +33,7 @@ public class ProfileServiceImpl implements ProfileService {
                         .username(username)
                         .reviewsFrom(Collections.emptyList())
                         .reviewsTo(Collections.emptyList())
+                        .updatedAt(LocalDateTime.now())
                         .build()
         );
     }
@@ -98,6 +99,9 @@ public class ProfileServiceImpl implements ProfileService {
         Profile profile = profileRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundedException("Profile with id %d not found".formatted(id))
         );
+        if (profileRepository.existsByUsername(username)) {
+            throw new DataFormatException("Username is already taken");
+        }
         profile.setUsername(username);
         profile.setUpdatedAt(LocalDateTime.now());
         return profileRepository.save(profile);

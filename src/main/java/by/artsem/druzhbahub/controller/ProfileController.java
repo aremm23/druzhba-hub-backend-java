@@ -2,10 +2,7 @@ package by.artsem.druzhbahub.controller;
 
 
 import by.artsem.druzhbahub.model.Profile;
-import by.artsem.druzhbahub.model.dto.profile.ProfileCreateRequestDTO;
-import by.artsem.druzhbahub.model.dto.profile.ProfileUpdateRequestDTO;
-import by.artsem.druzhbahub.model.dto.profile.ProfileUpdateSelfSummaryRequestDTO;
-import by.artsem.druzhbahub.model.dto.profile.ProfileUpdateUsernameRequestDTO;
+import by.artsem.druzhbahub.model.dto.profile.*;
 import by.artsem.druzhbahub.service.ProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -2,9 +2,11 @@ package by.artsem.druzhbahub.model.dto.profile;
 
 import by.artsem.druzhbahub.model.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class ProfileUpdateRequestDTO {//TODO add images
     @NotBlank
     private String username;
