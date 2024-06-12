@@ -29,6 +29,8 @@ public class Profile {
 
     private Integer rate;
 
+    private LocalDateTime updatedAt;
+
     @Column(length = 350)
     private String selfSummary;
 

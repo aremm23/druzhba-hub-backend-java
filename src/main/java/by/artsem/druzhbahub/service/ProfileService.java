@@ -5,4 +5,6 @@ import by.artsem.druzhbahub.security.model.Account;
 
 public interface ProfileService extends CRUDService<Profile, Long>{
     Profile createEmptyProfile(String username, Account account);
+    Profile updateSelfSummary(Long id, String selfSummary);
+    Profile updateUsername(Long id, String username);
 }
