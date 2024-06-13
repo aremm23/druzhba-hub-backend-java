@@ -6,7 +6,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Data
-@ToString()
+@ToString(exclude = {"profile", "post"})
 @EqualsAndHashCode()
 @Builder
 @AllArgsConstructor
@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Likes {
     @Id
-    @SequenceGenerator(name = "likeIdSeqGen", sequenceName = "like_id_seq", allocationSize = 1)
+    @SequenceGenerator(name = "likeIdSeqGen", sequenceName = "likes_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "likeIdSeqGen")
     private Long id;
 

@@ -8,7 +8,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@ToString()
+@ToString(exclude =
+        {"account", "profileImages", "posts", "likes", "friends", "reviewsFrom", "reviewsTo"}
+)
 @EqualsAndHashCode()
 @Builder
 @AllArgsConstructor

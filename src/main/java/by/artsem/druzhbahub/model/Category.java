@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@ToString()
+@ToString(exclude = {"events"})
 @EqualsAndHashCode()
 @Builder
 @AllArgsConstructor
