@@ -43,7 +43,7 @@ public class Profile {
     private List<Post> posts;
 
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
-    private List<Likes> likes;
+    private List<Like> likes;
 
     @OneToMany(mappedBy = "profileFrom", cascade = CascadeType.ALL)
     private List<Review> reviewsFrom;
