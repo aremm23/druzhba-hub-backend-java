@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "likes")
 @NoArgsConstructor
-public class Likes {
+public class Like {
     @Id
     @SequenceGenerator(name = "likeIdSeqGen", sequenceName = "likes_id_seq", allocationSize = 1)
     @GeneratedValue(generator = "likeIdSeqGen")
