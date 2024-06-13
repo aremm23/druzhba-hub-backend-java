@@ -13,7 +13,7 @@ public class ProfileUpdateRequestDTO {//TODO add images
     private String selfSummary;
     private Integer rate;
     private List<Profile> friends;
-    private List<Likes> likes;
+    private List<Like> likes;
     private List<Post> posts;
     private List<Review> reviewsFrom;
     private List<Review> reviewsTo;

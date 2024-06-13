@@ -1,6 +1,6 @@
 package by.artsem.druzhbahub.model.dto.post;
 
-import by.artsem.druzhbahub.model.Likes;
+import by.artsem.druzhbahub.model.Like;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -11,5 +11,5 @@ public class PostUpdateRequestDTO {
     private String summary;
     @NotNull
     private Long eventId;
-    private List<Likes> likes;
+    private List<Like> likes;
 }

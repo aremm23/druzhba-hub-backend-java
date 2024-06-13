@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EventResponseDto {
+    private Long id;
+
     private String summary;
 
     private Long categoryId;

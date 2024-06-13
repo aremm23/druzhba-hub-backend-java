@@ -2,7 +2,7 @@ package by.artsem.druzhbahub.controller;
 
 import by.artsem.druzhbahub.model.Post;
 import by.artsem.druzhbahub.model.dto.post.*;
-import by.artsem.druzhbahub.model.dto.post.mapper.PostCreateRequestDtoMapper;
+import by.artsem.druzhbahub.model.dto.post.mapper.PostMapper;
 import by.artsem.druzhbahub.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class PostController {
 
     @PostMapping
     public ResponseEntity<HttpStatus> createPost(@RequestBody @Valid PostCreateRequestDTO postDto) {
-        postService.create(PostCreateRequestDtoMapper.mapToPost(postDto));
+        postService.create(PostMapper.mapToEntity(postDto));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -36,7 +36,7 @@ public class PostController {
     ) {
         Post updatedPost = postService.update(id, modelMapper.map(postDto, Post.class));
         return new ResponseEntity<>(
-                modelMapper.map(updatedPost, PostResponseDto.class),
+                PostMapper.mapToDto(updatedPost),
                 HttpStatus.OK
         );
     }
@@ -48,7 +48,7 @@ public class PostController {
     ) {
         Post updatedPost = postService.updateSummary(id, dto.getSummary());
         return new ResponseEntity<>(
-                modelMapper.map(updatedPost, PostResponseDto.class),
+                PostMapper.mapToDto(updatedPost),
                 HttpStatus.OK
         );
     }
@@ -60,7 +60,7 @@ public class PostController {
     ) {
         Post updatedPost = postService.updateEvent(id, dto.getEventId());
         return new ResponseEntity<>(
-                modelMapper.map(updatedPost, PostResponseDto.class),
+                PostMapper.mapToDto(updatedPost),
                 HttpStatus.OK);
     }
 
@@ -74,7 +74,7 @@ public class PostController {
     public ResponseEntity<PostResponseDto> getPostById(@PathVariable Long id) {
         Post post = postService.getById(id);
         return new ResponseEntity<>(
-                modelMapper.map(post, PostResponseDto.class),
+                PostMapper.mapToDto(post),
                 HttpStatus.OK
         );
     }
@@ -83,7 +83,7 @@ public class PostController {
     public ResponseEntity<List<PostResponseDto>> getAllPosts() {
         List<Post> posts = postService.getAll();
         return new ResponseEntity<>(
-                posts.stream().map(post -> modelMapper.map(post, PostResponseDto.class)).collect(Collectors.toList()),
+                posts.stream().map(PostMapper::mapToDto).collect(Collectors.toList()),
                 HttpStatus.OK
         );
     }

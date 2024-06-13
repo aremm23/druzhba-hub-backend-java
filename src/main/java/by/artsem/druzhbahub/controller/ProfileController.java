@@ -3,6 +3,7 @@ package by.artsem.druzhbahub.controller;
 
 import by.artsem.druzhbahub.model.Profile;
 import by.artsem.druzhbahub.model.dto.profile.*;
+import by.artsem.druzhbahub.model.dto.profile.mapper.ProfileMapper;
 import by.artsem.druzhbahub.service.ProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class ProfileController {
     ) {
         Profile updatedProfile = profileService.update(id, modelMapper.map(profileDto, Profile.class));
         return new ResponseEntity<>(
-                modelMapper.map(updatedProfile, ProfileResponseDto.class),
+                ProfileMapper.mapToDto(updatedProfile),
                 HttpStatus.OK
         );
     }
@@ -47,7 +48,7 @@ public class ProfileController {
     ) {
         Profile updatedProfile = profileService.updateSelfSummary(id, dto.getSelfSummary());
         return new ResponseEntity<>(
-                modelMapper.map(updatedProfile, ProfileResponseDto.class),
+                ProfileMapper.mapToDto(updatedProfile),
                 HttpStatus.OK
         );
     }
@@ -59,7 +60,7 @@ public class ProfileController {
     ) {
         Profile updatedProfile = profileService.updateUsername(id, dto.getUsername());
         return new ResponseEntity<>(
-                modelMapper.map(updatedProfile, ProfileResponseDto.class),
+                ProfileMapper.mapToDto(updatedProfile),
                 HttpStatus.OK
         );
     }
@@ -74,7 +75,7 @@ public class ProfileController {
     public ResponseEntity<ProfileResponseDto> getProfileById(@PathVariable Long id) {
         Profile profile = profileService.getById(id);
         return new ResponseEntity<>(
-                modelMapper.map(profile, ProfileResponseDto.class),
+                ProfileMapper.mapToDto(profile),
                 HttpStatus.OK
         );
     }
@@ -84,7 +85,7 @@ public class ProfileController {
         List<Profile> profiles = profileService.getAll();
         return new ResponseEntity<>(
                 profiles.stream().map(
-                        profile -> modelMapper.map(profile, ProfileResponseDto.class)).collect(Collectors.toList()
+                        ProfileMapper::mapToDto).collect(Collectors.toList()
                 ),
                 HttpStatus.OK
         );
