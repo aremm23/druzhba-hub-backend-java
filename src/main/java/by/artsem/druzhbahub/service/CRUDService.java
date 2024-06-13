@@ -2,7 +2,7 @@ package by.artsem.druzhbahub.service;
 
 import java.util.List;
 
-public interface CRUDService<T, ID> {
+public interface CRUDService<T, ID> extends EntityService{
     T create(T entity);
 
     T getById(ID id);
