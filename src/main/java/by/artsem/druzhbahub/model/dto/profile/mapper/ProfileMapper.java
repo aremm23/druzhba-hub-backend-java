@@ -11,7 +11,8 @@ public class ProfileMapper {
                 .username(profile.getUsername())
                 .selfSummary(profile.getSelfSummary())
                 .posts(profile.getPosts().stream().map(Post::getId).toList())
-                .friends(profile.getFriends().stream().map(Profile::getId).toList())
+                .subscribedTo(profile.getSubscribeTo().size())
+                .subscribers(profile.getSubscribers().size())
                 .reviewsFromThis(profile.getReviewsFrom().stream().map(Review::getId).toList())
                 .reviewsOnThis(profile.getReviewsTo().stream().map(Review::getId).toList())
                 .build();

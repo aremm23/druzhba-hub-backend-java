@@ -84,9 +84,7 @@ public class ProfileController {
     public ResponseEntity<List<ProfileResponseDto>> getAllProfiles() {
         List<Profile> profiles = profileService.getAll();
         return new ResponseEntity<>(
-                profiles.stream().map(
-                        ProfileMapper::mapToDto).collect(Collectors.toList()
-                ),
+                profiles.stream().map(ProfileMapper::mapToDto).collect(Collectors.toList()),
                 HttpStatus.OK
         );
     }

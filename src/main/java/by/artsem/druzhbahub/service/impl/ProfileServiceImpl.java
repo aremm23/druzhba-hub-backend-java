@@ -26,7 +26,8 @@ public class ProfileServiceImpl implements ProfileService {
                         .account(account)
                         .profileImages(Collections.emptyList())
                         .rate(0)
-                        .friends(Collections.emptyList())
+                        .subscribers(Collections.emptyList())
+                        .subscribeTo(Collections.emptyList())
                         .likes(Collections.emptyList())
                         .posts(Collections.emptyList())
                         .selfSummary("")
@@ -39,7 +40,7 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    @Deprecated
+    @Deprecated(since = "Lol")
     public Profile create(Profile profile) {
         profile.setUpdatedAt(LocalDateTime.now());
         return profileRepository.save(profile);
@@ -68,7 +69,7 @@ public class ProfileServiceImpl implements ProfileService {
         existingProfile.setRate(updatedProfile.getRate());
         existingProfile.setUpdatedAt(LocalDateTime.now());
         existingProfile.setProfileImages(updatedProfile.getProfileImages());
-        existingProfile.setFriends(updatedProfile.getFriends());
+        existingProfile.setSubscribers(updatedProfile.getSubscribers());
         existingProfile.setLikes(updatedProfile.getLikes());
         existingProfile.setPosts(updatedProfile.getPosts());
         existingProfile.setReviewsFrom(updatedProfile.getReviewsFrom());
@@ -106,4 +107,5 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setUpdatedAt(LocalDateTime.now());
         return profileRepository.save(profile);
     }
+
 }

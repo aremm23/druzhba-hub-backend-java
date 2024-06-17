@@ -51,10 +51,9 @@ public class Profile {
     @OneToMany(mappedBy = "profileTo", cascade = CascadeType.ALL)
     private List<Review> reviewsTo;
 
-    @ManyToMany
-    @JoinTable(
-            name = "friends",
-            joinColumns = @JoinColumn(name = "first_profile_id"),
-            inverseJoinColumns = @JoinColumn(name = "second_profile_id"))
-    private List<Profile> friends;
+    @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL)
+    private List<Subscription> subscribers;
+
+    @OneToMany(mappedBy = "subscribedTo", cascade = CascadeType.ALL)
+    private List<Subscription> subscribeTo;
 }
