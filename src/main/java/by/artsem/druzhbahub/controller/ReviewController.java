@@ -5,7 +5,7 @@ import by.artsem.druzhbahub.model.dto.review.ReviewCreateRequestDTO;
 import by.artsem.druzhbahub.model.dto.review.ReviewResponseDto;
 import by.artsem.druzhbahub.model.dto.review.ReviewUpdateCommentRequestDTO;
 import by.artsem.druzhbahub.model.dto.review.ReviewUpdateRequestDTO;
-import by.artsem.druzhbahub.model.dto.review.model.ReviewMapper;
+import by.artsem.druzhbahub.model.dto.review.mapper.ReviewMapper;
 import by.artsem.druzhbahub.service.ReviewService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

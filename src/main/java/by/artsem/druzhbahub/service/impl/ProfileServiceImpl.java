@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
@@ -40,7 +39,6 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    @Deprecated(since = "Lol")
     public Profile create(Profile profile) {
         profile.setUpdatedAt(LocalDateTime.now());
         return profileRepository.save(profile);

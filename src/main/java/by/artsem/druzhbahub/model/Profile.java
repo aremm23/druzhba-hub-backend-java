@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @ToString(exclude =
-        {"account", "profileImages", "posts", "likes", "friends", "reviewsFrom", "reviewsTo"}
+        {"account", "profileImages", "posts", "likes", "reviewsFrom", "reviewsTo"}
 )
 @EqualsAndHashCode()
 @Builder

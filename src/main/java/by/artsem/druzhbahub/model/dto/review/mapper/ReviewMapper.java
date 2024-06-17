@@ -1,4 +1,4 @@
-package by.artsem.druzhbahub.model.dto.review.model;
+package by.artsem.druzhbahub.model.dto.review.mapper;
 
 import by.artsem.druzhbahub.model.Profile;
 import by.artsem.druzhbahub.model.Review;
