@@ -2,6 +2,7 @@ package by.artsem.druzhbahub.controller;
 
 import by.artsem.druzhbahub.model.Like;
 import by.artsem.druzhbahub.model.dto.like.CreateLikeRequestDto;
+import by.artsem.druzhbahub.model.dto.like.LikeDeleteDto;
 import by.artsem.druzhbahub.model.dto.like.LikeResponseDto;
 import by.artsem.druzhbahub.model.dto.like.mapper.LikeMapper;
 import by.artsem.druzhbahub.service.LikeService;
@@ -27,8 +28,8 @@ public class LikeController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteLike(@PathVariable Long id) {
-        likeService.delete(id);
+    public ResponseEntity<HttpStatus> deleteLike(LikeDeleteDto likeDeleteDto) {
+        likeService.deleteByPostAndProfileId(likeDeleteDto.getPostId(), likeDeleteDto.getProfileId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

@@ -1,5 +1,7 @@
 package by.artsem.druzhbahub.service.impl;
 
+import by.artsem.druzhbahub.exception.DataNotCreatedException;
+import by.artsem.druzhbahub.exception.DataNotFoundedException;
 import by.artsem.druzhbahub.model.Like;
 import by.artsem.druzhbahub.repository.LikeRepository;
 import by.artsem.druzhbahub.service.LikeService;
@@ -29,13 +31,19 @@ public class LikeServiceImpl implements LikeService {
     @Override
     @Transactional
     public Like create(Like like) {
+        if(likeRepository.existsByProfileAndPost(like.getProfile(), like.getPost())) {
+            throw new DataNotCreatedException("Like is already exist");
+        }
         like.setCreatedAt(LocalDateTime.now());
         return likeRepository.save(like);
     }
 
     @Override
-    public void delete(Long aLong) {
-
+    @Transactional
+    public void deleteByPostAndProfileId(Long postId, Long profileId) {
+        likeRepository.delete(likeRepository.findByProfileIdAndPostId(profileId, postId).orElseThrow(
+                () -> new DataNotFoundedException("Like not found")
+        ));
     }
 
     @Override
