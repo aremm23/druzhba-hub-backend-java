@@ -5,7 +5,6 @@ import by.artsem.druzhbahub.model.Post;
 import by.artsem.druzhbahub.repository.PostRepository;
 import by.artsem.druzhbahub.service.EventService;
 import by.artsem.druzhbahub.service.PostService;
-import by.artsem.druzhbahub.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +14,10 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class PostServiceImpl implements PostService {
+
     private final PostRepository postRepository;
+
     private final EventService eventService;
-    private final ProfileService profileService;
 
     @Override
     public Post create(Post post) {

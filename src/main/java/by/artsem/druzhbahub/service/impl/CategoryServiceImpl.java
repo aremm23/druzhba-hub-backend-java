@@ -19,6 +19,7 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Override
+    @Transactional
     public Category create(Category entity) {
         if (categoryRepository.existsByName(entity.getName())) {
             throw new DataNotCreatedException("Category with name " + entity.getName() + " already exist");
@@ -48,7 +49,9 @@ public class CategoryServiceImpl implements CategoryService {
         existingCategory.setName(updatedCategory.getName());
         return categoryRepository.save(existingCategory);
     }
+
     @Override
+    @Transactional
     public void delete(Long id) {
         categoryRepository.delete(categoryRepository.findById(id).orElseThrow(
                 () -> new DataNotFoundedException("Category with id %d not found".formatted(id))

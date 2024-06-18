@@ -7,6 +7,7 @@ import by.artsem.druzhbahub.model.Subscription;
 import by.artsem.druzhbahub.repository.ProfileRepository;
 import by.artsem.druzhbahub.repository.SubscriptionRepository;
 import by.artsem.druzhbahub.service.SubscriptionService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     private final ProfileRepository profileRepository;
 
+    @Transactional
     @Override
     public Subscription subscribe(Long subscriberId, Long subscribedToId) {
         Profile subscriber = profileRepository.findById(subscriberId).orElseThrow(
@@ -40,6 +42,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         return subscriptionRepository.save(subscription);
     }
 
+    @Transactional
     @Override
     public void unsubscribe(Long subscriberId, Long subscribedToId) {
         Profile subscriber = profileRepository.findById(subscriberId).orElseThrow(
