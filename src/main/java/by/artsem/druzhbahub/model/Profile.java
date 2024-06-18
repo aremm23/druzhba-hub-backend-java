@@ -29,7 +29,7 @@ public class Profile {
     @Column(nullable = false, unique = true)
     private String username;
 
-    private Integer rate;
+    private Double rate;
 
     private LocalDateTime updatedAt;
 

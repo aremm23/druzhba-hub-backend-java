@@ -4,4 +4,5 @@ import by.artsem.druzhbahub.model.Review;
 
 public interface ReviewService extends CRUDService<Review, Long> {
     Review updateComment(Long id, String comment);
+    double getAverageRating(Long profileId);
 }
