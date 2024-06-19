@@ -3,6 +3,8 @@ package by.artsem.druzhbahub.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Data
 @ToString()
 @EqualsAndHashCode()
@@ -17,12 +19,13 @@ public class EventImage implements Image {
     @GeneratedValue(generator = "eventImageIdSeqGen")
     private Long id;
 
-    @Column(nullable = false)
-    private String imageUrl;
-
-    private String imageName;
-
     @ManyToOne
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
+
+    @Column(nullable = false)
+    private String gcsFileName;
+
+    @Column(nullable = false)
+    private LocalDateTime uploadTime;
 }

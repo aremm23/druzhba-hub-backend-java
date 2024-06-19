@@ -3,6 +3,8 @@ package by.artsem.druzhbahub.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Data
 @ToString()
 @EqualsAndHashCode()
@@ -17,12 +19,13 @@ public class ProfileImage implements Image {
     @GeneratedValue(generator = "profileImageIdSeqGen")
     private Long id;
 
-    @Column(nullable = false)
-    private String imageUrl;
-
-    private String imageName;
-
     @ManyToOne
     @JoinColumn(name = "profile_id", nullable = false)
     private Profile profile;
+
+    @Column(nullable = false)
+    private String gcsFileName;
+
+    @Column(nullable = false)
+    private LocalDateTime uploadTime;
 }

@@ -1,6 +1,9 @@
 package by.artsem.druzhbahub.model;
 
+import java.time.LocalDateTime;
+
 public interface Image {
-    String getImageUrl();
-    String getImageName();
+    Long getId();
+    String getGcsFileName();
+    LocalDateTime getUploadTime();
 }
