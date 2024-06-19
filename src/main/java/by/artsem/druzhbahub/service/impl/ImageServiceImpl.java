@@ -6,6 +6,7 @@ import by.artsem.druzhbahub.model.Event;
 import by.artsem.druzhbahub.model.EventImage;
 import by.artsem.druzhbahub.model.Profile;
 import by.artsem.druzhbahub.model.ProfileImage;
+import by.artsem.druzhbahub.model.dto.image.ImageResponseDto;
 import by.artsem.druzhbahub.repository.EventImageRepository;
 import by.artsem.druzhbahub.repository.EventRepository;
 import by.artsem.druzhbahub.repository.ProfileImageRepository;
@@ -47,22 +48,25 @@ public class ImageServiceImpl implements ImageService {
     private String bucketName;
 
     @Override
-    public ProfileImage uploadProfileImage(MultipartFile file, Long profileId) {
+    public void uploadProfileImage(MultipartFile file, Long profileId) {
         if (!profileRepository.existsById(profileId)) {
             throw new DataNotFoundedException("Profile doesn't exist");
         }
         if (profileImageRepository.countImagesByProfileId(profileId) > 3) {
-            throw new DataNotCreatedException("Can't upload more than 3 images");
+            throw new DataNotCreatedException("Can't upload more than 4 images");
         }
         String uniqueFileName = saveImageToGoogleCloudStorage(file);
-        return saveProfileImage(profileId, uniqueFileName);
+        saveProfileImage(profileId, uniqueFileName);
     }
 
     private String saveImageToGoogleCloudStorage(MultipartFile file) {
         imageVerifyingService.isImageUnderTwoMb(file);
         String uniqueFileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
         BlobId blobId = BlobId.of(bucketName, uniqueFileName);
-        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId)
+                .setContentType(file.getContentType())
+                .setContentDisposition("inline")
+                .build();
         createInStorage(file, blobInfo);
         return uniqueFileName;
     }
@@ -75,25 +79,28 @@ public class ImageServiceImpl implements ImageService {
         }
     }
 
-    private ProfileImage saveProfileImage(Long profileId, String uniqueFileName) {
+    private void saveProfileImage(Long profileId, String uniqueFileName) {
         ProfileImage profileImage = ProfileImage.builder()
                 .profile(Profile.builder().id(profileId).build())
                 .gcsFileName(uniqueFileName)
                 .uploadTime(LocalDateTime.now())
                 .build();
-        return profileImageRepository.save(profileImage);
+        profileImageRepository.save(profileImage);
     }
 
     @Override
-    public List<String> getProfileImageUrls(Long profileId) {
+    public List<ImageResponseDto> getProfileImageUrls(Long profileId) {
         List<ProfileImage> images = profileImageRepository.findByProfileId(profileId);
-        return images.stream()
-                .map(image -> getImageUrl(image.getGcsFileName()))
+        return images.stream().map(
+                        image -> ImageResponseDto.builder()
+                                .id(image.getId())
+                                .url(getImageUrl(image.getGcsFileName()))
+                                .build())
                 .collect(Collectors.toList());
     }
 
     @Override
-    public EventImage uploadEventImage(MultipartFile file, Long eventId) {
+    public void uploadEventImage(MultipartFile file, Long eventId) {
         if (!eventRepository.existsById(eventId)) {
             throw new DataNotFoundedException("Event doesn't exist");
         }
@@ -101,23 +108,26 @@ public class ImageServiceImpl implements ImageService {
             throw new DataNotCreatedException("Can't upload more than 3 images");
         }
         String uniqueFileName = saveImageToGoogleCloudStorage(file);
-        return saveEventImage(eventId, uniqueFileName);
+        saveEventImage(eventId, uniqueFileName);
     }
 
-    private EventImage saveEventImage(Long eventId, String uniqueFileName) {
+    private void saveEventImage(Long eventId, String uniqueFileName) {
         EventImage eventImage = EventImage.builder()
                 .event(Event.builder().id(eventId).build())
                 .gcsFileName(uniqueFileName)
                 .uploadTime(LocalDateTime.now())
                 .build();
-        return eventImageRepository.save(eventImage);
+        eventImageRepository.save(eventImage);
     }
 
     @Override
-    public List<String> getEventImageUrls(Long eventId) {
+    public List<ImageResponseDto> getEventImages(Long eventId) {
         List<EventImage> images = eventImageRepository.findByEventId(eventId);
-        return images.stream()
-                .map(image -> getImageUrl(image.getGcsFileName()))
+        return images.stream().map(
+                image -> ImageResponseDto.builder()
+                        .id(image.getId())
+                        .url(getImageUrl(image.getGcsFileName()))
+                        .build())
                 .collect(Collectors.toList());
     }
 
