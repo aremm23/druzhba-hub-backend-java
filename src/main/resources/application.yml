@@ -35,3 +35,13 @@ spring:
 email:
   confirm:
     link: http://${HOST_LOCAL}:8080/api/register/confirm?token=
+
+gcp:
+  bucket-name:
+    ${GCS_BUCKET_NAME}
+  project-id:
+    ${GCS_PROJECT_ID}
+  credentials:
+    file-path:
+      ${GCS_CREDENTIALS_PATH}
+
