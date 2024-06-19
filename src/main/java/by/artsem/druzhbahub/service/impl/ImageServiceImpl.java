@@ -1,6 +1,7 @@
 package by.artsem.druzhbahub.service.impl;
 
 import by.artsem.druzhbahub.exception.DataNotCreatedException;
+import by.artsem.druzhbahub.exception.DataNotDeletedException;
 import by.artsem.druzhbahub.exception.DataNotFoundedException;
 import by.artsem.druzhbahub.model.Event;
 import by.artsem.druzhbahub.model.EventImage;
@@ -134,6 +135,32 @@ public class ImageServiceImpl implements ImageService {
     private String getImageUrl(String gcsFileName) {
         Blob blob = storage.get(BlobId.of(bucketName, gcsFileName));
         return blob.signUrl(1, TimeUnit.HOURS).toString();
+    }
+
+    @Override
+    public void deleteProfileImage(Long imageId) {
+        ProfileImage profileImage = profileImageRepository.findById(imageId)
+                .orElseThrow(() -> new DataNotFoundedException("Profile image not found"));
+
+        deleteImageFromGoogleCloudStorage(profileImage.getGcsFileName());
+        profileImageRepository.delete(profileImage);
+    }
+
+    @Override
+    public void deleteEventImage(Long imageId) {
+        EventImage eventImage = eventImageRepository.findById(imageId)
+                .orElseThrow(() -> new DataNotFoundedException("Event image not found"));
+
+        deleteImageFromGoogleCloudStorage(eventImage.getGcsFileName());
+        eventImageRepository.delete(eventImage);
+    }
+
+    private void deleteImageFromGoogleCloudStorage(String gcsFileName) {
+        BlobId blobId = BlobId.of(bucketName, gcsFileName);
+        boolean deleted = storage.delete(blobId);
+        if (!deleted) {
+            throw new DataNotDeletedException("Failed to delete image from Google Cloud Storage");
+        }
     }
 }
 

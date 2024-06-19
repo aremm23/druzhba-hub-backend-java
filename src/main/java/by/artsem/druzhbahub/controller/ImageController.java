@@ -47,5 +47,15 @@ public class ImageController {
         return ResponseEntity.ok(imageDtos);
     }
 
+    @DeleteMapping("/profile/{imageId}")
+    public ResponseEntity<Void> deleteProfileImage(@PathVariable Long imageId) {
+        imageService.deleteProfileImage(imageId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
+    @DeleteMapping("/event/{imageId}")
+    public ResponseEntity<HttpStatus> deleteEventImage(@PathVariable Long imageId) {
+        imageService.deleteEventImage(imageId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

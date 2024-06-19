@@ -10,4 +10,6 @@ public interface ImageService extends EntityService {
     void uploadEventImage(MultipartFile file, Long profileId);
     List<ImageResponseDto> getProfileImageUrls(Long profileId);
     List<ImageResponseDto> getEventImages(Long eventId);
+    void deleteProfileImage(Long imageId);
+    void deleteEventImage(Long imageId);
 }
