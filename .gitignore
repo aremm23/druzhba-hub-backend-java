@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 /.env
+/logs
+/qodana.yaml
+/robotic-door-426907-q2-0b53edbba1e7.json
 
 ### STS ###
 .apt_generated
