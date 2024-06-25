@@ -16,6 +16,13 @@ spring:
     hibernate:
       ddl-auto: none
 
+  data:
+    mongodb:
+      authentication-database: admin
+      database: druzhba-hub
+      port: 27017
+      host: ${HOST_LOCAL}
+
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     enabled: true
