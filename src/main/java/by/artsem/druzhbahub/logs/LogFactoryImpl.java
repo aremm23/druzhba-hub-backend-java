@@ -20,7 +20,7 @@ public class LogFactoryImpl implements LogFactory {
         return ExceptionLogEntity.builder()
                 .id("exception-%s".formatted(LocalDateTime.now()))
                 .timestamp(LocalDateTime.now())
-                .level("EXCEPTION")
+                .level(parameters.getLevel())
                 .message(parameters.getMessage())
                 .build();
     }
@@ -29,7 +29,7 @@ public class LogFactoryImpl implements LogFactory {
         return AuditLogEntity.builder()
                 .userId(parameters.getUserId())
                 .id("user#%s-%s".formatted(parameters.getUserId(), LocalDateTime.now()))
-                .level("AUDIT")
+                .level(parameters.getLevel())
                 .timestamp(LocalDateTime.now())
                 .message(parameters.getMessage())
                 .build();

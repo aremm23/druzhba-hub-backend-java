@@ -7,7 +7,6 @@ import by.artsem.druzhbahub.security.model.dto.RoleUpdateRequestDTO;
 import by.artsem.druzhbahub.security.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.patterns.HasMemberTypePatternForPerThisMatching;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -54,13 +53,12 @@ public class AccountController {
             @Valid @RequestBody RoleUpdateRequestDTO roleUpdateRequestDTO
     ) {
         accountService.updateRole(id, roleUpdateRequestDTO);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);    }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteAccount(@PathVariable Long id) {
         accountService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 }

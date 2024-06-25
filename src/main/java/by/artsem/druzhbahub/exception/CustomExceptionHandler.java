@@ -19,7 +19,8 @@ public class CustomExceptionHandler {
             IllegalStateException.class,
             DataFormatException.class,
             IllegalArgumentException.class,
-            InvalidFileException.class
+            InvalidFileException.class,
+            EmailConfirmedException.class
     })
     private ResponseEntity<ErrorResponse> handlerException(RuntimeException e) {
         ErrorResponse errorResponse = new ErrorResponse(
