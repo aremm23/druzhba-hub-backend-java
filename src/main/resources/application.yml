@@ -43,6 +43,13 @@ email:
   confirm:
     link: http://${HOST_LOCAL}:8080/api/register/confirm?token=
 
+logging:
+  file:
+    path: logs
+    name: ${logging.file.path}/druzhba-hub-logs.log
+  level:
+    root: INFO
+
 gcp:
   bucket-name:
     ${GCS_BUCKET_NAME}
