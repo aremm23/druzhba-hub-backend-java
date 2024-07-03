@@ -44,11 +44,7 @@ public class SecurityController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtTokenResponseDto> login(@RequestBody LoginRequestDto dto) {
-        //TODO
-        System.out.println("\n\n\n" + dto.getPassword() + " " + dto.getEmail());
-        String token = "aaaaaaa";
-        Long id = 26L;
-        return new ResponseEntity<>(JwtTokenResponseDto.builder().token(token).id(id).build(), HttpStatus.OK);
+        return new ResponseEntity<>(accountService.authenticate(dto), HttpStatus.OK);
     }
 
     @GetMapping("/confirm")

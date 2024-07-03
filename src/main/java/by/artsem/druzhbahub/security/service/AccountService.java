@@ -13,6 +13,8 @@ import by.artsem.druzhbahub.security.repository.AccountRepository;
 import by.artsem.druzhbahub.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,10 @@ public class AccountService {
     private final AccountRepository accountRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final JwtService jwtService;
+
+    private final AuthenticationManager authenticationManager;
 
     private final ProfileService profileService;
 
@@ -124,6 +130,24 @@ public class AccountService {
                 .role(account.getRole().name())
                 .createdAt(account.getCreatedAt().toString())
                 .updatedAt(account.getUpdatedAt().toString())
+                .id(account.getId())
+                .build();
+    }
+
+    public JwtTokenResponseDto authenticate(LoginRequestDto request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+        var account = accountRepository.findByEmail(request.getEmail())
+                .orElseThrow(
+                        () -> new DataNotFoundedException("Unknown email")
+                );
+        var jwtToken = jwtService.generateToken(account);
+        return JwtTokenResponseDto.builder()
+                .token(jwtToken)
                 .id(account.getId())
                 .build();
     }
