@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/profiles")
 @RequiredArgsConstructor
+@CrossOrigin
 public class ProfileController {
 
     private final ProfileService profileService;
@@ -41,6 +42,7 @@ public class ProfileController {
         );
     }
 
+    @CrossOrigin
     @PutMapping("/{id}/summary")
     public ResponseEntity<ProfileResponseDto> updateSelfSummary(
             @PathVariable Long id,
@@ -49,6 +51,20 @@ public class ProfileController {
         Profile updatedProfile = profileService.updateSelfSummary(id, dto.getSelfSummary());
         return new ResponseEntity<>(
                 ProfileMapper.mapToDto(updatedProfile),
+                HttpStatus.OK
+        );
+    }
+
+
+    @CrossOrigin
+    @GetMapping("/{id}/summary")
+    public ResponseEntity<ProfileSummaryResponseDto> selfSummary(
+            @PathVariable Long id
+    ) {
+        return new ResponseEntity<>(
+                ProfileSummaryResponseDto.builder()
+                        .selfSummary(profileService.getById(id).getSelfSummary())
+                        .build(),
                 HttpStatus.OK
         );
     }
