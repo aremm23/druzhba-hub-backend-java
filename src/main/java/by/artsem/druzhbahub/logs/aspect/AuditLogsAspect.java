@@ -17,7 +17,7 @@ public class AuditLogsAspect {
 
     private final MongoAppLogger mongoAppLogger;
 
-    @Pointcut("execution(* by.artsem.druzhbahub.security.controller.RegistrationController.register(..))")
+    @Pointcut("execution(* by.artsem.druzhbahub.security.controller.SecurityController.register(..))")
     public void registerMethod() {
     }
 
