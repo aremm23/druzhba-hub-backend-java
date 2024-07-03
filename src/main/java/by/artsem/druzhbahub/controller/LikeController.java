@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/likes")
+@CrossOrigin
 public class LikeController {
     private final LikeService likeService;
 
@@ -27,9 +28,15 @@ public class LikeController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/profile-post/{id}")
     public ResponseEntity<HttpStatus> deleteLike(LikeDeleteDto likeDeleteDto) {
         likeService.deleteByPostAndProfileId(likeDeleteDto.getPostId(), likeDeleteDto.getProfileId());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteLike(@PathVariable Long id) {
+        likeService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

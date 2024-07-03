@@ -14,4 +14,6 @@ public interface LikeService extends EntityService {
     void deleteByPostAndProfileId(Long postId, Long profileId);
 
     Like create(Like like);
+
+    void delete(Long id);
 }

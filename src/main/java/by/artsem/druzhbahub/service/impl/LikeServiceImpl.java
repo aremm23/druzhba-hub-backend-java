@@ -39,6 +39,11 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
+    public void delete(Long id) {
+        likeRepository.delete(likeRepository.findById(id).orElseThrow(() -> new DataNotFoundedException("No such Like")));
+    }
+
+    @Override
     @Transactional
     public void deleteByPostAndProfileId(Long postId, Long profileId) {
         likeRepository.delete(likeRepository.findByProfileIdAndPostId(profileId, postId).orElseThrow(
