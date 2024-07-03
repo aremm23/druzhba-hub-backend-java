@@ -14,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/subscriptions")
 @RequiredArgsConstructor
+@CrossOrigin
 public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;

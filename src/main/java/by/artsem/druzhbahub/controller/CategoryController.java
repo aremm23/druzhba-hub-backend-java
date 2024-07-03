@@ -15,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/categories")
 @RequiredArgsConstructor
+@CrossOrigin
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -35,6 +36,7 @@ public class CategoryController {
         );
     }
 
+    @CrossOrigin
     @GetMapping
     public ResponseEntity<List<CategoryGetResponseDto>> getAllCategories() {
         return new ResponseEntity<>(

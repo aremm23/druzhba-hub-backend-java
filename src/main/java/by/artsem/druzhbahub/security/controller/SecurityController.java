@@ -2,6 +2,9 @@ package by.artsem.druzhbahub.security.controller;
 
 import by.artsem.druzhbahub.security.model.Account;
 import by.artsem.druzhbahub.security.model.ConfirmationToken;
+import by.artsem.druzhbahub.security.model.dto.CurrentUserResponse;
+import by.artsem.druzhbahub.security.model.dto.JwtTokenResponseDto;
+import by.artsem.druzhbahub.security.model.dto.LoginRequestDto;
 import by.artsem.druzhbahub.security.model.dto.RegistrationRequestDTO;
 import by.artsem.druzhbahub.security.service.AccountService;
 import by.artsem.druzhbahub.security.service.ConfirmationTokenService;
@@ -15,7 +18,8 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/security")
 @RequiredArgsConstructor
-public class RegistrationController {
+@CrossOrigin
+public class SecurityController {
 
     private final ConfirmationTokenService confirmationTokenService;
 
