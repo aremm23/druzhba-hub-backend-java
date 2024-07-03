@@ -25,7 +25,7 @@ public class RegistrationController {
 
     private final EmailService emailService;
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<HttpStatus> register(@RequestBody RegistrationRequestDTO dto) {
         Account account = accountService.createAccountAndProfile(dto);
         ConfirmationToken token = confirmationTokenService.create(account);
@@ -38,9 +38,23 @@ public class RegistrationController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<JwtTokenResponseDto> login(@RequestBody LoginRequestDto dto) {
+        //TODO
+        System.out.println("\n\n\n" + dto.getPassword() + " " + dto.getEmail());
+        String token = "aaaaaaa";
+        Long id = 26L;
+        return new ResponseEntity<>(JwtTokenResponseDto.builder().token(token).id(id).build(), HttpStatus.OK);
+    }
+
     @GetMapping("/confirm")
     public ResponseEntity<HttpStatus> confirm(@RequestParam("token") String token) {
         accountService.confirmEmail(token);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/current-user")
+    public ResponseEntity<CurrentUserResponse> getCurrentUser() {
+        return new ResponseEntity<>(CurrentUserResponse.builder().role("USER").id(27L).build(), HttpStatus.OK);
     }
 }
