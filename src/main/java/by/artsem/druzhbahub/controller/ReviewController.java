@@ -70,6 +70,15 @@ public class ReviewController {
         );
     }
 
+    @GetMapping("/profile/{id}")
+    public ResponseEntity<List<ReviewResponseDto>> getReviewByProfileToId(@PathVariable Long id) {
+        List<Review> reviews = reviewService.getReviewsByProfileToId(id);
+        return new ResponseEntity<>(
+                reviews.stream().map(ReviewMapper::mapToDto).collect(Collectors.toList()),
+                HttpStatus.OK
+        );
+    }
+
     @GetMapping
     public ResponseEntity<List<ReviewResponseDto>> getAllReviews() {
         List<Review> reviews = reviewService.getAll();

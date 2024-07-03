@@ -91,5 +91,10 @@ public class ReviewServiceImpl implements ReviewService {
     public double getAverageRating(Long profileId) {
         return reviewRepository.findAverageGradeByProfileId(profileId).orElse(0.0);
     }
+
+    @Override
+    public List<Review> getReviewsByProfileToId(Long id) {
+        return reviewRepository.findByProfileToId(id);
+    }
 }
 
