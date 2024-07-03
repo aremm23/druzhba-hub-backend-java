@@ -58,4 +58,6 @@ gcp:
   credentials:
     file-path:
       ${GCS_CREDENTIALS_PATH}
-
+jwt:
+  secret: ${JWT_SECRET}
+  expiration: 10
