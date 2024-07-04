@@ -1,5 +1,6 @@
 package by.artsem.druzhbahub.security;
 
+import by.artsem.druzhbahub.security.filter.EmailConfirmationFilter;
 import by.artsem.druzhbahub.security.filter.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,6 +27,8 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
 
+    private final EmailConfirmationFilter emailConfirmationFilter;
+
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
@@ -35,20 +38,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/api/**", "GET"))
-                                .hasAnyRole("ADMIN", "USER")
-                                .requestMatchers(new AntPathRequestMatcher("/api/**", "PUT"))
-                                .hasRole("ADMIN")
-                                .requestMatchers(new AntPathRequestMatcher("/api/**", "PATCH"))
-                                .hasRole("ADMIN")
-                                .requestMatchers(new AntPathRequestMatcher("/api/**", "DELETE"))
-                                .hasRole("ADMIN")
                                 .anyRequest()
                                 .authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(emailConfirmationFilter, JwtAuthenticationFilter.class)
         ;
 
         return http.build();
