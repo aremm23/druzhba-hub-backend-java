@@ -160,9 +160,4 @@ public class AccountService {
         );
     }
 
-    public boolean isEmailConfirmed(String email) {
-        return accountRepository.findByEmail(email).orElseThrow(
-                () -> new DataNotFoundedException("Email not found")
-        ).isEmailConfirmed();
-    }
 }

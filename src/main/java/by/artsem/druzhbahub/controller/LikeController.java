@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,20 +23,22 @@ import java.util.stream.Collectors;
 public class LikeController {
     private final LikeService likeService;
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @PostMapping
     public ResponseEntity<HttpStatus> createLike(@RequestBody @Valid CreateLikeRequestDto dto) {
         likeService.create(LikeMapper.mapToEntity(dto));
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/profile-post/{id}")
+    @DeleteMapping("/profile-post")
     public ResponseEntity<HttpStatus> deleteLike(LikeDeleteDto likeDeleteDto) {
         likeService.deleteByPostAndProfileId(likeDeleteDto.getPostId(), likeDeleteDto.getProfileId());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteLike(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> deleteLikeId(@PathVariable Long id) {
         likeService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
