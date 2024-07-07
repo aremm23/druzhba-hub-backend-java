@@ -60,4 +60,4 @@ gcp:
       ${GCS_CREDENTIALS_PATH}
 jwt:
   secret: ${JWT_SECRET}
-  expiration: 10
+  expiration: 1440
