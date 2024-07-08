@@ -53,6 +53,12 @@ public class SecurityController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
+        accountService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("/current-user")
     public ResponseEntity<CurrentUserResponse> getCurrentUser() {
         return new ResponseEntity<>(accountService.getCurrentUser(), HttpStatus.OK);
