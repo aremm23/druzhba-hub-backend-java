@@ -20,8 +20,7 @@
 
 Druzhba Hub is a platform for socializing and organizing events where users can create profiles, find friends or companions for joint participation in various events or simply for walks. Key features include:
 
-- **Profile Management**: CRUD.
-- **Event Management**: CRUD.
+- **Profile and Event Management**: CRUD.
 - **Post Management**: Users can create posts related to events or general topics.
 - **Interactions**: Users can like posts and follow other users for updates and notifications.
 - **Authentication and Authorization**: Secure registration and login using JWT tokens.
@@ -39,7 +38,3 @@ Before getting started, ensure you have the following software installed:
 - Google Cloud Storage (credentials required for connection)
 
 ##Thanks for attention
-
-   ```bash
-   git clone <repository_url>
-   cd druzhba-hub-backend
