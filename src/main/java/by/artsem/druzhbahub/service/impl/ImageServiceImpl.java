@@ -105,7 +105,7 @@ public class ImageServiceImpl implements ImageService {
         if (!eventRepository.existsById(eventId)) {
             throw new DataNotFoundedException("Event doesn't exist");
         }
-        if (eventImageRepository.countImagesByEventId(eventId) > 3) {
+        if (eventImageRepository.countImagesByEventId(eventId) > 2) {
             throw new DataNotCreatedException("Can't upload more than 3 images");
         }
         String uniqueFileName = saveImageToGoogleCloudStorage(file);
