@@ -13,7 +13,6 @@ public class AuditLogService implements MongoLogService<AuditLogEntity> {
 
     @Override
     public void log(AuditLogEntity log) {
-        System.out.println(log.toString());
         repository.save(log);
     }
 }
