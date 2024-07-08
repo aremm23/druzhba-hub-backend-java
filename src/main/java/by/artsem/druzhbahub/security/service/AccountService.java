@@ -1,9 +1,6 @@
 package by.artsem.druzhbahub.security.service;
 
-import by.artsem.druzhbahub.exception.DataFormatException;
-import by.artsem.druzhbahub.exception.DataNotFoundedException;
-import by.artsem.druzhbahub.exception.EmailConfirmedException;
-import by.artsem.druzhbahub.exception.TokenExpireException;
+import by.artsem.druzhbahub.exception.*;
 import by.artsem.druzhbahub.security.model.Account;
 import by.artsem.druzhbahub.security.model.ConfirmationToken;
 import by.artsem.druzhbahub.security.model.Role;
@@ -12,14 +9,19 @@ import by.artsem.druzhbahub.security.model.dto.mapper.AccountMapper;
 import by.artsem.druzhbahub.security.repository.AccountRepository;
 import by.artsem.druzhbahub.service.ProfileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -38,6 +40,7 @@ public class AccountService {
     private final ConfirmationTokenService confirmationTokenService;
 
     private final AccountMapper accountMapper;
+    private final DataSourceTransactionManagerAutoConfiguration dataSourceTransactionManagerAutoConfiguration;
 
     public Account createAccountAndProfile(RegistrationRequestDTO dto) {
         if (accountRepository.existsByEmail(dto.getEmail())) {
@@ -160,4 +163,22 @@ public class AccountService {
         );
     }
 
+    public CurrentUserResponse getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new UserNotAuthenticatedException("User not authenticated");
+        }
+        Object principle = authentication.getPrincipal();
+        if(!(principle instanceof Account)) {
+            throw new DataFormatException("Not able to extract id from principle. Principle not instance of Account");
+        }
+        Long id = ((Account) principle).getId();
+        String roles = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(", "));
+        return CurrentUserResponse.builder()
+                .id(id)
+                .role(roles)
+                .build();
+    }
 }

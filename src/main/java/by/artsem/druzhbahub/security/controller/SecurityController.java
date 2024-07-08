@@ -55,6 +55,6 @@ public class SecurityController {
 
     @GetMapping("/current-user")
     public ResponseEntity<CurrentUserResponse> getCurrentUser() {
-        return new ResponseEntity<>(CurrentUserResponse.builder().role("USER").id(27L).build(), HttpStatus.OK);
+        return new ResponseEntity<>(accountService.getCurrentUser(), HttpStatus.OK);
     }
 }
