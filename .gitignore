@@ -7,6 +7,10 @@ target/
 /logs
 /qodana.yaml
 /robotic-door-426907-q2-0b53edbba1e7.json
+/.mvn
+/HELP.md
+/mvnw.cmd
+/mvnw
 
 ### STS ###
 .apt_generated
