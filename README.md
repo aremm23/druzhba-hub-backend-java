@@ -37,4 +37,4 @@ Before getting started, ensure you have the following software installed:
 - MongoDB
 - Google Cloud Storage (credentials required for connection)
 
-##Thanks for attention
+### Thanks for attention
