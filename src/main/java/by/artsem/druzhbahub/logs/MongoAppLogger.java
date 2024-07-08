@@ -25,6 +25,7 @@ public class MongoAppLogger {
         };
     }
 
+    @SuppressWarnings("unchecked")
     private <T extends LogEntity> void logToService(T logEntity) {
         MongoLogService<T> logService = logStrategyFactory.getLogService((Class<T>) logEntity.getClass());
         logService.log(logEntity);

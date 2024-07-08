@@ -13,7 +13,6 @@ public class ExceptionLogService implements MongoLogService<ExceptionLogEntity> 
 
     @Override
     public void log(ExceptionLogEntity log) {
-        System.out.println(log.toString());
         repository.save(log);
     }
 }

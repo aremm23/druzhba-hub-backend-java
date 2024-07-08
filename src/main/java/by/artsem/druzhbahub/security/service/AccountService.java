@@ -58,7 +58,7 @@ public class AccountService {
         return account;
     }
 
-    public void confirmEmail(String token) {
+    public Account confirmEmail(String token) {
         ConfirmationToken confirmationToken = confirmationTokenService.findByToken(token);
         if (confirmationTokenService.isExpire(confirmationToken)) {
             throw new TokenExpireException("Expired token");
@@ -68,7 +68,7 @@ public class AccountService {
             throw new EmailConfirmedException("Email is already confirmed");
         }
         account.setEmailConfirmed(true);
-        accountRepository.save(account);
+        return accountRepository.save(account);
     }
 
     public void updatePassword(Long id, PasswordUpdateRequestDTO passwordUpdateRequestDTO) {

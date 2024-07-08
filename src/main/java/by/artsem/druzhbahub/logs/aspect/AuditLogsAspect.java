@@ -3,8 +3,11 @@ package by.artsem.druzhbahub.logs.aspect;
 import by.artsem.druzhbahub.logs.LogParameters;
 import by.artsem.druzhbahub.logs.LoggingLevels;
 import by.artsem.druzhbahub.logs.MongoAppLogger;
+import by.artsem.druzhbahub.security.model.Account;
+import by.artsem.druzhbahub.security.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -17,12 +20,10 @@ public class AuditLogsAspect {
 
     private final MongoAppLogger mongoAppLogger;
 
-    @Pointcut("execution(* by.artsem.druzhbahub.security.controller.SecurityController.register(..))")
-    public void registerMethod() {
-    }
+    private final AccountService accountService;
 
-    @Pointcut("execution(* by.artsem.druzhbahub.security.service.EmailService.sendEmail(..))")
-    public void sendEmailMethod() {
+    @Pointcut("execution(* by.artsem.druzhbahub.security.service.AccountService.createAccountAndProfile(..))")
+    public void registerMethod() {
     }
 
     @Pointcut("execution(* by.artsem.druzhbahub.security.service.AccountService.updatePassword(..))")
@@ -37,38 +38,39 @@ public class AuditLogsAspect {
     public void confirmEmailWithToken() {
     }
 
-    @AfterReturning("registerMethod()")
-    public void logAfterRegister(JoinPoint joinPoint) {
-        logAction(joinPoint, "User registered");
+    @Pointcut("execution(* by.artsem.druzhbahub.service.PostService.create(..))")
+    public void createPost() {
     }
 
-    @AfterReturning("confirmEmailWithToken()")
-    public void logAfterConfirming(JoinPoint joinPoint) {
-        logAction(joinPoint, "User email confirmed");
+    @AfterReturning(value = "registerMethod()", returning = "result")
+    public void logAfterRegister(JoinPoint joinPoint, Account result) {
+        logAction(joinPoint, "User registered", result.getId().toString());
     }
 
-    @AfterReturning("sendEmailMethod()")
-    public void logAfterSendEmail(JoinPoint joinPoint) {
-        logAction(joinPoint, "Email sent");
+    @AfterReturning(value = "confirmEmailWithToken()", returning = "result")
+    public void logAfterConfirming(JoinPoint joinPoint, Account result) {
+        logAction(joinPoint, "User email confirmed", result.getId().toString());
     }
 
     @AfterReturning("updatePasswordMethod()")
     public void logAfterUpdatePassword(JoinPoint joinPoint) {
-        logAction(joinPoint, "Password updated");
+        logAction(joinPoint, "Password updated", getUserId());
+    }
+
+    @After(value = "createPost()")
+    public void logAfterCreatingPost(JoinPoint joinPoint) {
+        logAction(joinPoint, "Post created", getUserId());
     }
 
     @AfterReturning("updateEmailMethod()")
     public void logAfterUpdateEmail(JoinPoint joinPoint) {
-        logAction(joinPoint, "Email updated");
+        logAction(joinPoint, "Email updated", getUserId());
     }
 
-    private void logAction(JoinPoint joinPoint, String action) {
-        //TODO: get user id
-        String userId = "0";
+    private void logAction(JoinPoint joinPoint, String action, String userId) {
         String methodName = joinPoint.getSignature().getName();
         String className = joinPoint.getTarget().getClass().getSimpleName();
         String message = String.format("Action: %s, Method: %s, Class: %s, User: %s", action, methodName, className, userId);
-
         mongoAppLogger.log(
                 LogParameters.builder()
                         .userId(userId)
@@ -77,5 +79,9 @@ public class AuditLogsAspect {
                         .message(message)
                         .build()
         );
+    }
+
+    private String getUserId() {
+        return accountService.getCurrentUser().getId().toString();
     }
 }
