@@ -2,8 +2,10 @@ package by.artsem.druzhbahub.controller;
 
 
 import by.artsem.druzhbahub.model.Profile;
+import by.artsem.druzhbahub.model.dto.image.ImageResponseDto;
 import by.artsem.druzhbahub.model.dto.profile.*;
 import by.artsem.druzhbahub.model.dto.profile.mapper.ProfileMapper;
+import by.artsem.druzhbahub.service.ImageService;
 import by.artsem.druzhbahub.service.ProfileService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,9 @@ import java.util.stream.Collectors;
 public class ProfileController {
 
     private final ProfileService profileService;
+
+    private final ImageService imageService;
+
     private final ModelMapper modelMapper;
 
     @PostMapping
@@ -42,7 +47,6 @@ public class ProfileController {
         );
     }
 
-    @CrossOrigin
     @PutMapping("/{id}/summary")
     public ResponseEntity<ProfileResponseDto> updateSelfSummary(
             @PathVariable Long id,
@@ -56,7 +60,6 @@ public class ProfileController {
     }
 
 
-    @CrossOrigin
     @GetMapping("/{id}/summary")
     public ResponseEntity<ProfileSummaryResponseDto> selfSummary(
             @PathVariable Long id
@@ -106,10 +109,16 @@ public class ProfileController {
     }
 
     @GetMapping("/recommended/{profileId}")
-    public ResponseEntity<List<ProfileResponseDto>> getRecommendedProfiles(@PathVariable Long profileId) {
+    public ResponseEntity<List<ShortProfileResponseDto>> getRecommendedProfiles(@PathVariable Long profileId) {
         List<Profile> profiles = profileService.getRecommended(profileId);
         return new ResponseEntity<>(
-                profiles.stream().map(ProfileMapper::mapToDto).collect(Collectors.toList()),
+                profiles.stream().map(profile -> {
+                    List<ImageResponseDto> images = imageService.getProfileImageUrls(profile.getId());
+                    if(!images.isEmpty())
+                        return ProfileMapper.mapToShortDto(profile, images.get(images.size() - 1).getUrl());
+                    else
+                        return ProfileMapper.mapToShortDto(profile, "https://friconix.com/png/fi-cnluxx-anonymous-user-circle.png");
+                }).collect(Collectors.toList()),
                 HttpStatus.OK
         );
     }
