@@ -27,7 +27,7 @@ public class SecurityController {
     private final EmailService emailService;
 
     @PostMapping("/register")
-    public ResponseEntity<HttpStatus> register(@RequestBody RegistrationRequestDTO dto) {
+    public ResponseEntity<AccountIdResponseDto> register(@RequestBody RegistrationRequestDTO dto) {
         Account account = accountService.createAccountAndProfile(dto);
         ConfirmationToken token = confirmationTokenService.create(account);
         emailTextService.createEmailMessage(token.getToken());
@@ -36,7 +36,12 @@ public class SecurityController {
                 emailTextService.getSubject(),
                 emailTextService.getBody()
         );
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                AccountIdResponseDto.builder()
+                        .id(account.getId())
+                        .build()
+                , HttpStatus.CREATED
+        );
     }
 
     @PostMapping("/login")
