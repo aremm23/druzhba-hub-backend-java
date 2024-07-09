@@ -1,8 +1,13 @@
 package by.artsem.druzhbahub.controller;
 
 import by.artsem.druzhbahub.model.Post;
+import by.artsem.druzhbahub.model.Profile;
+import by.artsem.druzhbahub.model.dto.image.ImageResponseDto;
 import by.artsem.druzhbahub.model.dto.post.*;
 import by.artsem.druzhbahub.model.dto.post.mapper.PostMapper;
+import by.artsem.druzhbahub.model.dto.profile.ShortProfileResponseDto;
+import by.artsem.druzhbahub.model.dto.profile.mapper.ProfileMapper;
+import by.artsem.druzhbahub.service.ImageService;
 import by.artsem.druzhbahub.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +26,8 @@ import java.util.stream.Collectors;
 public class PostController {
 
     private final PostService postService;
+
+    private final ImageService imageService;
 
     private final ModelMapper modelMapper;
 
@@ -81,10 +88,19 @@ public class PostController {
     }
 
     @GetMapping("/recommended/{profileId}")
-    public ResponseEntity<List<PostResponseDto>> getRecommendedPostsByProfileId(@PathVariable Long profileId) {
+    public ResponseEntity<List<FullPostResponseDto>> getRecommendedPostsByProfileId(@PathVariable Long profileId) {
         List<Post> posts = postService.getRecommendedPostsByProfileId(profileId);
         return new ResponseEntity<>(
-                posts.stream().map(PostMapper::mapToDto).collect(Collectors.toList()),
+                posts.stream().map(post -> {
+                    Profile profile = post.getProfile();
+                    List<ImageResponseDto> images = imageService.getProfileImageUrls(profile.getId());
+                    ShortProfileResponseDto profileDto;
+                    if(!images.isEmpty())
+                        profileDto = ProfileMapper.mapToShortDto(profile, images.get(images.size() - 1).getUrl());
+                    else
+                        profileDto = ProfileMapper.mapToShortDto(profile, "https://friconix.com/png/fi-cnluxx-anonymous-user-circle.png");
+                    return PostMapper.mapToFullDto(post, profileDto);
+                }).collect(Collectors.toList()),
                 HttpStatus.OK
         );
     }
