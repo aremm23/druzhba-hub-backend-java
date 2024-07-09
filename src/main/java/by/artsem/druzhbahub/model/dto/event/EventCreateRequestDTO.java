@@ -27,6 +27,8 @@ public class EventCreateRequestDTO {
     @NotEmpty(message = "Location is required")
     private String location;
 
+    private Boolean isCreatedByAdmin;
+
     @NotNull(message = "Start date and time are required")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime startAt;

@@ -29,6 +29,8 @@ public class Event {
 
     private String location;
 
+    private Boolean isCreatedByAdmin;
+
     @Column(nullable = false)
     private LocalDateTime startAt;
 
