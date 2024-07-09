@@ -80,6 +80,15 @@ public class PostController {
         );
     }
 
+    @GetMapping("/recommended/{profileId}")
+    public ResponseEntity<List<PostResponseDto>> getRecommendedPostsByProfileId(@PathVariable Long profileId) {
+        List<Post> posts = postService.getRecommendedPostsByProfileId(profileId);
+        return new ResponseEntity<>(
+                posts.stream().map(PostMapper::mapToDto).collect(Collectors.toList()),
+                HttpStatus.OK
+        );
+    }
+
     @GetMapping
     public ResponseEntity<List<PostResponseDto>> getAllPosts() {
         List<Post> posts = postService.getAll();

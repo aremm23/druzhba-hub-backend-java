@@ -17,6 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "profile")
 @NoArgsConstructor
+//TODO add birth date and location
 public class Profile {
     @Id
     @SequenceGenerator(name = "profileIdSeqGen", sequenceName = "profile_id_seq", allocationSize = 1)

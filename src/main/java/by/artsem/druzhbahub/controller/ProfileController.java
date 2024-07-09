@@ -104,4 +104,13 @@ public class ProfileController {
                 HttpStatus.OK
         );
     }
+
+    @GetMapping("/recommended/{profileId}")
+    public ResponseEntity<List<ProfileResponseDto>> getRecommendedProfiles(@PathVariable Long profileId) {
+        List<Profile> profiles = profileService.getRecommended(profileId);
+        return new ResponseEntity<>(
+                profiles.stream().map(ProfileMapper::mapToDto).collect(Collectors.toList()),
+                HttpStatus.OK
+        );
+    }
 }
