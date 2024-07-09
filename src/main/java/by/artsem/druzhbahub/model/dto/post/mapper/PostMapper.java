@@ -6,7 +6,6 @@ import by.artsem.druzhbahub.model.Profile;
 import by.artsem.druzhbahub.model.dto.post.FullPostResponseDto;
 import by.artsem.druzhbahub.model.dto.post.PostCreateRequestDTO;
 import by.artsem.druzhbahub.model.dto.post.PostResponseDto;
-import by.artsem.druzhbahub.model.dto.profile.ProfileSummaryResponseDto;
 import by.artsem.druzhbahub.model.dto.profile.ShortProfileResponseDto;
 
 public class PostMapper {

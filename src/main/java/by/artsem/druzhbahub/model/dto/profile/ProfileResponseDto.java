@@ -12,6 +12,8 @@ public class ProfileResponseDto {//TODO add images
     private String username;
     private String selfSummary;
     private Double rate;
+    private Integer age;
+    private String place;
     private Integer subscribers;
     private Integer subscribedTo;
     private List<Long> posts;

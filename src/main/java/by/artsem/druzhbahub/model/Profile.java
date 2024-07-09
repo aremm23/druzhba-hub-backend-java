@@ -37,6 +37,11 @@ public class Profile {
     @Column(length = 350)
     private String selfSummary;
 
+    //TODO birth date
+    private Integer age;
+
+    private String place;
+
     @OneToMany(mappedBy = "profile", cascade = CascadeType.ALL)
     private List<ProfileImage> profileImages;
 

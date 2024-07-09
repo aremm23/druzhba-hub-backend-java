@@ -16,6 +16,8 @@ public class ProfileMapper {
                 .subscribers(profile.getSubscribers().size())
                 .reviewsFromThis(profile.getReviewsFrom().stream().map(Review::getId).toList())
                 .reviewsOnThis(profile.getReviewsTo().stream().map(Review::getId).toList())
+                .age(profile.getAge())
+                .place(profile.getPlace())
                 .build();
     }
 
