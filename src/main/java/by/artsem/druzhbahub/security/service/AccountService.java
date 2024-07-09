@@ -180,4 +180,9 @@ public class AccountService {
                 .role(roles)
                 .build();
     }
+
+
+    public Boolean isEmailConfirmed(Long id) {
+        return accountRepository.isEmailConfirmedById(id);
+    }
 }

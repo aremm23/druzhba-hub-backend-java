@@ -2,10 +2,7 @@ package by.artsem.druzhbahub.security.controller;
 
 import by.artsem.druzhbahub.security.model.Account;
 import by.artsem.druzhbahub.security.model.ConfirmationToken;
-import by.artsem.druzhbahub.security.model.dto.CurrentUserResponse;
-import by.artsem.druzhbahub.security.model.dto.JwtTokenResponseDto;
-import by.artsem.druzhbahub.security.model.dto.LoginRequestDto;
-import by.artsem.druzhbahub.security.model.dto.RegistrationRequestDTO;
+import by.artsem.druzhbahub.security.model.dto.*;
 import by.artsem.druzhbahub.security.service.AccountService;
 import by.artsem.druzhbahub.security.service.ConfirmationTokenService;
 import by.artsem.druzhbahub.security.service.EmailService;
@@ -62,5 +59,15 @@ public class SecurityController {
     @GetMapping("/current-user")
     public ResponseEntity<CurrentUserResponse> getCurrentUser() {
         return new ResponseEntity<>(accountService.getCurrentUser(), HttpStatus.OK);
+    }
+
+    @GetMapping("/is-confirmed/{id}")
+    public ResponseEntity<AccountIsEmailConfirmedDto> isEmailConfirmed(@PathVariable Long id) {
+        return new ResponseEntity<>(
+                AccountIsEmailConfirmedDto.builder()
+                        .isEmailConfirmed(accountService.isEmailConfirmed(id))
+                        .build(),
+                HttpStatus.OK
+        );
     }
 }
