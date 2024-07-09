@@ -4,6 +4,7 @@ import by.artsem.druzhbahub.exception.DataFormatException;
 import by.artsem.druzhbahub.exception.DataNotCreatedException;
 import by.artsem.druzhbahub.exception.DataNotFoundedException;
 import by.artsem.druzhbahub.model.Profile;
+import by.artsem.druzhbahub.model.dto.profile.ProfileUpdateGeneralRequestDTO;
 import by.artsem.druzhbahub.repository.ProfileRepository;
 import by.artsem.druzhbahub.security.model.Account;
 import by.artsem.druzhbahub.service.ProfileService;
@@ -132,6 +133,18 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setRate(averageGrade);
         profile.setUpdatedAt(LocalDateTime.now());
         profileRepository.save(profile);
+    }
+
+    @Override
+    public Profile updateGeneral(Long id, ProfileUpdateGeneralRequestDTO dto) {
+        Profile existingProfile = profileRepository.findById(id).orElseThrow(
+                () -> new DataNotFoundedException("Profile with id %d not found".formatted(id))
+        );
+        existingProfile.setSelfSummary(dto.getSelfSummary());
+        existingProfile.setAge(dto.getAge());
+        existingProfile.setPlace(dto.getPlace());
+        return profileRepository.save(existingProfile);
+
     }
 
     @Override

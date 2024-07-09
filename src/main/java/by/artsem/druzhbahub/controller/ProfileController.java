@@ -47,6 +47,18 @@ public class ProfileController {
         );
     }
 
+    @PutMapping("/{id}/general")
+    public ResponseEntity<ProfileResponseDto> updateGeneralProfileInfo(
+            @PathVariable Long id,
+            @RequestBody @Valid ProfileUpdateGeneralRequestDTO profileDto
+    ) {
+        Profile updatedProfile = profileService.updateGeneral(id, profileDto);
+        return new ResponseEntity<>(
+                ProfileMapper.mapToDto(updatedProfile),
+                HttpStatus.OK
+        );
+    }
+
     @PutMapping("/{id}/summary")
     public ResponseEntity<ProfileResponseDto> updateSelfSummary(
             @PathVariable Long id,
