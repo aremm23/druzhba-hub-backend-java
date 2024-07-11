@@ -49,12 +49,6 @@ public class SecurityController {
         return new ResponseEntity<>(accountService.authenticate(dto), HttpStatus.OK);
     }
 
-    @GetMapping("/confirm")
-    public ResponseEntity<HttpStatus> confirm(@RequestParam("token") String token) {
-        accountService.confirmEmail(token);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
         accountService.delete(id);
