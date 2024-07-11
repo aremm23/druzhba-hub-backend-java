@@ -21,7 +21,8 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableMethodSecurity
 public class SecurityConfig {
     private static final String[] WHITE_LIST_URL = {
-            "/api/security/**"
+            "/api/security/**",
+            "/api/profiles/**"
     };
 
     private final JwtAuthenticationFilter jwtAuthFilter;
