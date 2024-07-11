@@ -5,6 +5,7 @@ import by.artsem.druzhbahub.security.model.Account;
 import by.artsem.druzhbahub.security.model.ConfirmationToken;
 import by.artsem.druzhbahub.security.repository.ConfirmationTokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -15,6 +16,9 @@ import java.util.UUID;
 public class ConfirmationTokenService {
     private final ConfirmationTokenRepository confirmationTokenRepository;
 
+    @Value("${email.confirm.token.duration}")
+    private Integer tokenDuration;
+
     public ConfirmationToken create(Account account) {
         return confirmationTokenRepository.save(buildConfirmationToken(account));
     }
@@ -23,7 +27,7 @@ public class ConfirmationTokenService {
         return ConfirmationToken.builder()
                 .token(UUID.randomUUID().toString())
                 .account(account)
-                .expireAt(LocalDateTime.now().plusHours(1))
+                .expireAt(LocalDateTime.now().plusHours(tokenDuration))
                 .createdAt(LocalDateTime.now())
                 .build();
     }

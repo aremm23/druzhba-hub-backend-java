@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 @Getter
 public class EmailTextService {
 
-    private static final String BODY_TEXT = "Please click the link to confirm your email: ";
+    private static final String BODY_TEXT = "Чтоб закончить процесс регистрации пожалуйста подтвердите почту перейдя по ссылке: ";
 
-    private static final String SUBJECT_TEXT = "Confirm your email";
+    private static final String SUBJECT_TEXT = "Подтвердите почту";
 
     @Value("${email.confirm.link}")
     private String link;

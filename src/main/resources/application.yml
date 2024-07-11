@@ -7,7 +7,7 @@ spring:
     import: optional:file:.env[.properties]
 
   datasource:
-    url: jdbc:postgresql://${HOST_LOCAL}:5432/${POSTGRES_DB}
+    url: jdbc:postgresql://${HOST}:5432/${POSTGRES_DB}
     username: ${POSTGRES_USERNAME}
     password: ${POSTGRES_PASSWORD}
 
@@ -21,7 +21,7 @@ spring:
       authentication-database: admin
       database: druzhba-hub
       port: 27017
-      host: ${HOST_LOCAL}
+      host: ${HOST}
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
@@ -39,9 +39,13 @@ spring:
           starttls:
             enable: true
             required: true
+
+
 email:
   confirm:
-    link: http://${HOST_LOCAL}:8080/api/register/confirm?token=
+    link: http://${HOST}:8080/confirm?token=
+    token:
+      duration: 1440
 
 logging:
   file:

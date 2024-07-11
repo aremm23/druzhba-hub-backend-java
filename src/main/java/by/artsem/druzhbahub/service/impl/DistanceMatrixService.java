@@ -10,15 +10,15 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class DistanceMatrixService {
 
+    private static final String MAPS_API_URL = "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&units=metric&key=%s";
+
     private final RestTemplate restTemplate;
+
     @Value("${gcp.api.maps.key}")
     private String apiKey;
 
     public int getDistanceValue(String origin, String destination) {
-        String url = String.format(
-                "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&units=metric&key=%s",
-                origin, destination, apiKey
-        );
+        String url = String.format(MAPS_API_URL, origin, destination, apiKey);
 
         DistanceMatrixResponse response = restTemplate.getForObject(url, DistanceMatrixResponse.class);
         checkResult(response);
@@ -32,6 +32,4 @@ public class DistanceMatrixService {
             throw new RuntimeException("Unable to retrieve distance value from response");
         }
     }
-
-
 }
