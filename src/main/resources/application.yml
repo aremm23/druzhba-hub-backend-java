@@ -58,6 +58,10 @@ gcp:
   credentials:
     file-path:
       ${GCS_CREDENTIALS_PATH}
+  api:
+    maps:
+      key:
+        ${GC_MAPS_API_KEY}
 jwt:
   secret: ${JWT_SECRET}
   expiration: 1440
