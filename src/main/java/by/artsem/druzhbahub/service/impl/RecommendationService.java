@@ -2,6 +2,8 @@ package by.artsem.druzhbahub.service.impl;
 
 import by.artsem.druzhbahub.model.Post;
 import by.artsem.druzhbahub.repository.PostRepository;
+import by.artsem.druzhbahub.security.service.AccountService;
+import by.artsem.druzhbahub.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +16,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class RecommendationService {
 
+    private final DistanceMatrixService distanceMatrixService;
+
     private final PostRepository postRepository;
 
+    private final AccountService accountService;
+
+    private final ProfileService profileService;
+
     public List<Post> getRecommendedPostsByProfileId(Long profileId) {
-        //TODO sort with user location and age
         LocalDateTime now = LocalDateTime.now();
         List<Post> allPosts = postRepository.findAll();
 
@@ -26,12 +33,20 @@ public class RecommendationService {
                 .filter(post -> !post.getProfile().getId().equals(profileId))
                 .toList();
 
-        List<Post> sortedPosts = filteredPosts.stream()
+        return filteredPosts.stream()
                 .sorted(Comparator.comparing((Post post) -> post.getProfile().getRate(), Comparator.reverseOrder())
+                        .thenComparing(this::compareLocation)
+                        .thenComparing(post -> post.getProfile().getAge())
                         .thenComparing(post -> post.getEvent().getStartAt()))
                 .limit(30)
                 .collect(Collectors.toList());
+    }
 
-        return sortedPosts;
+    private int compareLocation(Post post) {
+        return distanceMatrixService.getDistanceValue(post.getEvent().getLocation(), getCurrentProfileLocation());
+    }
+
+    private String getCurrentProfileLocation() {
+        return profileService.getById(accountService.getCurrentUser().getId()).getPlace();
     }
 }
