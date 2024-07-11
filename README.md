@@ -15,7 +15,7 @@
 - **JavaMailSender**: Email sending, including registration confirmation.
 - **Liquibase**: Database migrations management.
 - **Lombok**
-
+- **Integrated with Google maps api (distance matrix)**
 ## Description
 
 Druzhba Hub is a platform for socializing and organizing events where users can create profiles, find friends or companions for joint participation in various events or simply for walks. Key features include:
