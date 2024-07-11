@@ -24,6 +24,7 @@ Druzhba Hub is a platform for socializing and organizing events where users can 
 - **Post Management**: Users can create posts related to events or general topics.
 - **Interactions**: Users can like posts and follow other users for updates and notifications.
 - **Authentication and Authorization**: Secure registration and login using JWT tokens.
+- **Integrated with Google maps api (distance matrix)
 - **Image Management**: Uploading and storage of profile and event images in Google Cloud Storage.
 
 ## Requirements
