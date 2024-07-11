@@ -1,5 +1,4 @@
 spring:
-
   application:
     name: druzhba-hub-app
 
@@ -42,8 +41,9 @@ spring:
 
 
 email:
+  address: ${EMAIL_ADDRESS}
   confirm:
-    link: http://${HOST}:8080/confirm?token=
+    link: http://${HOST}:8080/email/confirm?token=
     token:
       duration: 1440
 
