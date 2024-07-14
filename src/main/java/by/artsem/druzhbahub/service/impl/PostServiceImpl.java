@@ -19,13 +19,6 @@ public class PostServiceImpl implements PostService {
 
     private final EventService eventService;
 
-    private final RecommendationService recommendationService;
-
-    @Override
-    public List<Post> getRecommendedPostsByProfileId(Long profileId) {
-        return recommendationService.getRecommendedPostsByProfileId(profileId);
-    }
-
     @Override
     public Post create(Post post) {
         post.setCreatedAt(LocalDateTime.now());

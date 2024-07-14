@@ -15,13 +15,13 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService {
 
     private final ProfileRepository profileRepository;
+
 
     @Override
     @Transactional
@@ -145,15 +145,6 @@ public class ProfileServiceImpl implements ProfileService {
         existingProfile.setPlace(dto.getPlace());
         return profileRepository.save(existingProfile);
 
-    }
-
-    @Override
-    public List<Profile> getRecommended(Long profileId) {
-        //TODO
-        return profileRepository.findAll().stream()
-                .filter(profile -> !profile.getId().equals(profileId))
-                .limit(10)
-                .collect(Collectors.toList());
     }
 
 }

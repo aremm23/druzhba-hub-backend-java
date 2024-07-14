@@ -1,9 +1,10 @@
 package by.artsem.druzhbahub.service.impl;
 
+import by.artsem.druzhbahub.exception.DataNotFoundedException;
 import by.artsem.druzhbahub.model.Post;
+import by.artsem.druzhbahub.model.Profile;
 import by.artsem.druzhbahub.repository.PostRepository;
-import by.artsem.druzhbahub.security.service.AccountService;
-import by.artsem.druzhbahub.service.ProfileService;
+import by.artsem.druzhbahub.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +21,15 @@ public class RecommendationService {
 
     private final PostRepository postRepository;
 
-    private final AccountService accountService;
+    private final ProfileRepository profileRepository;
 
-    private final ProfileService profileService;
+    private String currentProfileLocation;
 
     public List<Post> getRecommendedPostsByProfileId(Long profileId) {
+        Profile currentProfile = getProfile(profileId);
+        currentProfileLocation = currentProfile.getPlace();
         LocalDateTime now = LocalDateTime.now();
         List<Post> allPosts = postRepository.findAll();
-
         List<Post> filteredPosts = allPosts.stream()
                 .filter(post -> post.getEvent().getStartAt().isAfter(now))
                 .filter(post -> !post.getProfile().getId().equals(profileId))
@@ -35,18 +37,39 @@ public class RecommendationService {
 
         return filteredPosts.stream()
                 .sorted(Comparator.comparing((Post post) -> post.getProfile().getRate(), Comparator.reverseOrder())
-                        .thenComparing(this::compareLocation)
+                        .thenComparing(this::comparePostLocation)
                         .thenComparing(post -> post.getProfile().getAge())
                         .thenComparing(post -> post.getEvent().getStartAt()))
                 .limit(30)
                 .collect(Collectors.toList());
     }
 
-    private int compareLocation(Post post) {
-        return distanceMatrixService.getDistanceValue(post.getEvent().getLocation(), getCurrentProfileLocation());
+    public List<Profile> getRecommendedProfilesByProfileId(Long profileId) {
+        Profile currentProfile = getProfile(profileId);
+        currentProfileLocation = currentProfile.getPlace();
+        List<Profile> profiles = profileRepository.findProfilesWithinAgeRange(currentProfile.getAge(), profileId);
+        List<Profile> filteredProfiles = profiles.stream()
+                .filter(profile -> !profile.getId().equals(profileId))
+                .toList();
+
+        return filteredProfiles.stream()
+                .sorted(Comparator.comparing(this::compareProfileLocation)
+                        .thenComparing(Profile::getRate, Comparator.reverseOrder()))
+                .limit(6)
+                .collect(Collectors.toList());
     }
 
-    private String getCurrentProfileLocation() {
-        return profileService.getById(accountService.getCurrentUser().getId()).getPlace();
+    private Profile getProfile(Long profileId) {
+        return profileRepository.findById(profileId).orElseThrow(
+                () -> new DataNotFoundedException("Profile not found")
+        );
+    }
+
+    private int comparePostLocation(Post post) {
+        return distanceMatrixService.getDistanceValue(post.getEvent().getLocation(), currentProfileLocation);
+    }
+
+    private int compareProfileLocation(Profile profile) {
+        return distanceMatrixService.getDistanceValue(profile.getPlace(), currentProfileLocation);
     }
 }

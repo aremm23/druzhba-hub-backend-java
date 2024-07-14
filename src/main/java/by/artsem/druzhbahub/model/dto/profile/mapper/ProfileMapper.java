@@ -1,6 +1,8 @@
 package by.artsem.druzhbahub.model.dto.profile.mapper;
 
-import by.artsem.druzhbahub.model.*;
+import by.artsem.druzhbahub.model.Post;
+import by.artsem.druzhbahub.model.Profile;
+import by.artsem.druzhbahub.model.Review;
 import by.artsem.druzhbahub.model.dto.profile.ProfileResponseDto;
 import by.artsem.druzhbahub.model.dto.profile.ShortProfileResponseDto;
 

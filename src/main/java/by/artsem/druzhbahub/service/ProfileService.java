@@ -4,8 +4,6 @@ import by.artsem.druzhbahub.model.Profile;
 import by.artsem.druzhbahub.model.dto.profile.ProfileUpdateGeneralRequestDTO;
 import by.artsem.druzhbahub.security.model.Account;
 
-import java.util.List;
-
 public interface ProfileService extends CRUDService<Profile, Long> {//TODO add images
 
     Profile createEmptyProfile(String username, Account account);
@@ -17,6 +15,4 @@ public interface ProfileService extends CRUDService<Profile, Long> {//TODO add i
     void updateRating(Long id, double averageGrade);
 
     Profile updateGeneral(Long id, ProfileUpdateGeneralRequestDTO dto);
-
-    List<Profile> getRecommended(Long profileId);
 }

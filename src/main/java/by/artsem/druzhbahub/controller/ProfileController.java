@@ -7,6 +7,7 @@ import by.artsem.druzhbahub.model.dto.profile.*;
 import by.artsem.druzhbahub.model.dto.profile.mapper.ProfileMapper;
 import by.artsem.druzhbahub.service.ImageService;
 import by.artsem.druzhbahub.service.ProfileService;
+import by.artsem.druzhbahub.service.impl.RecommendationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -28,6 +29,10 @@ public class ProfileController {
     private final ImageService imageService;
 
     private final ModelMapper modelMapper;
+
+    private final RecommendationService recommendationService;
+
+    private final String avatarUrl = "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=";
 
     @PostMapping
     public ResponseEntity<HttpStatus> createProfile(@RequestBody @Valid ProfileCreateRequestDTO profileDto) {
@@ -122,14 +127,14 @@ public class ProfileController {
 
     @GetMapping("/recommended/{profileId}")
     public ResponseEntity<List<ShortProfileResponseDto>> getRecommendedProfiles(@PathVariable Long profileId) {
-        List<Profile> profiles = profileService.getRecommended(profileId);
+        List<Profile> profiles = recommendationService.getRecommendedProfilesByProfileId(profileId);
         return new ResponseEntity<>(
                 profiles.stream().map(profile -> {
                     List<ImageResponseDto> images = imageService.getProfileImageUrls(profile.getId());
-                    if(!images.isEmpty())
+                    if (!images.isEmpty())
                         return ProfileMapper.mapToShortDto(profile, images.get(images.size() - 1).getUrl());
                     else
-                        return ProfileMapper.mapToShortDto(profile, "https://friconix.com/png/fi-cnluxx-anonymous-user-circle.png");
+                        return ProfileMapper.mapToShortDto(profile, avatarUrl);
                 }).collect(Collectors.toList()),
                 HttpStatus.OK
         );
