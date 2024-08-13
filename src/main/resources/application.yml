@@ -5,11 +5,6 @@ spring:
   config:
     import: optional:file:.env[.properties]
 
-  datasource:
-    url: jdbc:postgresql://${HOST}:5432/${POSTGRES_DB}
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
-
   jpa:
     show-sql: true
     hibernate:
@@ -21,6 +16,15 @@ spring:
       database: druzhba-hub
       port: 27017
       host: ${HOST}
+    redis:
+      host: ${HOST}
+      port: ${REDIS_PORT}
+      password: ${REDIS_PASSWORD}
+
+  datasource:
+    url: jdbc:postgresql://${HOST}:5432/${POSTGRES_DB}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
@@ -38,7 +42,9 @@ spring:
           starttls:
             enable: true
             required: true
-
+  cache:
+    type: redis
+    cache-names: redis-cache
 
 email:
   address: ${EMAIL_ADDRESS}
