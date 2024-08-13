@@ -1,0 +1,75 @@
+version: '2'
+
+volumes:
+  cache:
+    driver: local
+  mongo_data:
+    driver: local
+
+services:
+  app:
+    build:
+      context: .
+    image: 'druzhba-hub-backend:latest'
+    container_name: druzhba-hub-backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+      - liquibase
+      - mongo
+    env_file:
+      - .env
+    networks:
+      - api_network
+
+  db:
+    image: 'postgres:16.1'
+    container_name: postgres-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USERNAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB_DOCKER}
+    networks:
+      - api_network
+
+  redis:
+    image: 'redis:latest'
+    restart: always
+    container_name: redis
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel notice --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - cache:/data
+    networks:
+      - api_network
+
+  liquibase:
+    image: liquibase/liquibase:latest
+    container_name: liquibase
+    depends_on:
+      - db
+    volumes:
+      - ./liquibase:/liquibase/changelog
+    environment:
+      POSTGRES_USERNAME: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB_DOCKER: ${POSTGRES_DB_DOCKER}
+    command: ["--defaultsFile=/liquibase/changelog/liquibase.properties", "update"]
+    networks:
+      - api_network
+
+  mongo:
+    image: 'mongo:latest'
+    container_name: mongo-db
+    ports:
+      - "27017:27017"
+    networks:
+      - api_network
+
+networks:
+  api_network:
+    driver: bridge
